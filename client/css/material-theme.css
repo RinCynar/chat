@@ -1,0 +1,335 @@
+/**
+ * Material You Design System
+ * 材料设计 You 设计系统
+ * 
+ * This file contains all Material You design tokens including:
+ * - Color system (light/dark themes)
+ * - Elevation system
+ * - Typography scale
+ * - Border radius tokens
+ * - Transition/animation tokens
+ */
+
+/* ============================================
+   ROOT VARIABLES - SHARED TOKENS
+   ============================================ */
+:root {
+  /* Elevation System - Material You shadows */
+  --md-elevation-0: none;
+  --md-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
+    0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
+    0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0 1px 3px 0 rgba(0, 0, 0, 0.3),
+    0 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --md-elevation-4: 0 2px 3px 0 rgba(0, 0, 0, 0.3),
+    0 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --md-elevation-5: 0 4px 4px 0 rgba(0, 0, 0, 0.3),
+    0 8px 12px 6px rgba(0, 0, 0, 0.15);
+
+  /* Border Radius Tokens */
+  --md-radius-none: 0;
+  --md-radius-xs: 4px;
+  --md-radius-sm: 8px;
+  --md-radius-md: 12px;
+  --md-radius-lg: 16px;
+  --md-radius-xl: 24px;
+  --md-radius-full: 9999px;
+
+  /* Transition Tokens */
+  --md-transition-duration-short: 150ms;
+  --md-transition-duration-medium: 250ms;
+  --md-transition-duration-long: 400ms;
+  --md-transition-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --md-transition-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --md-transition-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Typography Scale */
+  --md-font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Arial, sans-serif;
+  --md-font-size-xs: 0.75rem; /* 12px */
+  --md-font-size-sm: 0.875rem; /* 14px */
+  --md-font-size-base: 1rem; /* 16px */
+  --md-font-size-lg: 1.125rem; /* 18px */
+  --md-font-size-xl: 1.25rem; /* 20px */
+  --md-font-size-2xl: 1.5rem; /* 24px */
+  --md-font-size-3xl: 2rem; /* 32px */
+
+  /* Spacing Scale */
+  --md-spacing-xs: 4px;
+  --md-spacing-sm: 8px;
+  --md-spacing-md: 16px;
+  --md-spacing-lg: 24px;
+  --md-spacing-xl: 32px;
+  --md-spacing-2xl: 48px;
+}
+
+/* ============================================
+   DARK THEME (DEFAULT)
+   深色主题（默认）
+   ============================================ */
+:root,
+body[data-theme="dark"],
+body:not([data-theme]) {
+  color-scheme: dark;
+
+  /* Primary Colors - Deep Blue/Purple palette */
+  --md-primary: #a8c7fa;
+  --md-on-primary: #0a2540;
+  --md-primary-container: #1e3a5f;
+  --md-on-primary-container: #d3e3fd;
+
+  /* Secondary Colors - Teal accent */
+  --md-secondary: #b8cfe6;
+  --md-on-secondary: #1a2f42;
+  --md-secondary-container: #2d4559;
+  --md-on-secondary-container: #d4e4f7;
+
+  /* Tertiary Colors - Purple accent */
+  --md-tertiary: #d4bbff;
+  --md-on-tertiary: #2b1a47;
+  --md-tertiary-container: #422e5f;
+  --md-on-tertiary-container: #eeddff;
+
+  /* Error Colors */
+  --md-error: #ffb4ab;
+  --md-on-error: #690005;
+  --md-error-container: #93000a;
+  --md-on-error-container: #ffdad6;
+
+  /* Surface Colors - Background layers */
+  --md-surface: #1a1c1e;
+  --md-on-surface: #e3e2e6;
+  --md-surface-variant: #43474e;
+  --md-on-surface-variant: #c3c6cf;
+
+  --md-surface-container-lowest: #0f1113;
+  --md-surface-container-low: #1a1c1e;
+  --md-surface-container: #1e2022;
+  --md-surface-container-high: #282a2c;
+  --md-surface-container-highest: #333537;
+
+  /* Outline Colors */
+  --md-outline: #8d9199;
+  --md-outline-variant: #43474e;
+
+  /* Background */
+  --md-background: #1a1c1e;
+  --md-on-background: #e3e2e6;
+
+  /* Inverse Colors */
+  --md-inverse-surface: #e3e2e6;
+  --md-inverse-on-surface: #2f3033;
+  --md-inverse-primary: #3d5a80;
+
+  /* Shadow & Scrim */
+  --md-shadow: #000000;
+  --md-scrim: #000000;
+
+  /* Chat-specific colors */
+  --md-chat-bubble-me: #2d4559;
+  --md-chat-bubble-other: #282a2c;
+  --md-chat-bubble-system: #333537;
+  --md-chat-input-bg: #1e2022;
+  --md-sidebar-bg: #1a1c1e;
+  --md-header-bg: #1e2022;
+
+  /* State layers (for hover, focus, etc.) */
+  --md-state-hover-opacity: 0.08;
+  --md-state-focus-opacity: 0.12;
+  --md-state-pressed-opacity: 0.12;
+  --md-state-dragged-opacity: 0.16;
+}
+
+/* ============================================
+   LIGHT THEME
+   浅色主题
+   ============================================ */
+body[data-theme="light"] {
+  color-scheme: light;
+
+  /* Primary Colors - Vibrant Blue */
+  --md-primary: #3d5a80;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #d3e3fd;
+  --md-on-primary-container: #001c3a;
+
+  /* Secondary Colors - Teal */
+  --md-secondary: #2d4559;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #d4e4f7;
+  --md-on-secondary-container: #0a1929;
+
+  /* Tertiary Colors - Purple */
+  --md-tertiary: #5a4570;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #eeddff;
+  --md-on-tertiary-container: #1d0e2b;
+
+  /* Error Colors */
+  --md-error: #ba1a1a;
+  --md-on-error: #ffffff;
+  --md-error-container: #ffdad6;
+  --md-on-error-container: #410002;
+
+  /* Surface Colors */
+  --md-surface: #fafcff;
+  --md-on-surface: #1a1c1e;
+  --md-surface-variant: #e0e2ec;
+  --md-on-surface-variant: #43474e;
+
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #f4f6fa;
+  --md-surface-container: #eef0f5;
+  --md-surface-container-high: #e8eaef;
+  --md-surface-container-highest: #e3e5ea;
+
+  /* Outline Colors */
+  --md-outline: #73777f;
+  --md-outline-variant: #c3c6cf;
+
+  /* Background */
+  --md-background: #fafcff;
+  --md-on-background: #1a1c1e;
+
+  /* Inverse Colors */
+  --md-inverse-surface: #2f3033;
+  --md-inverse-on-surface: #f1f0f4;
+  --md-inverse-primary: #a8c7fa;
+
+  /* Shadow & Scrim */
+  --md-shadow: #000000;
+  --md-scrim: #000000;
+
+  /* Chat-specific colors */
+  --md-chat-bubble-me: #d3e3fd;
+  --md-chat-bubble-other: #ffffff;
+  --md-chat-bubble-system: #e8eaef;
+  --md-chat-input-bg: #ffffff;
+  --md-sidebar-bg: #fafcff;
+  --md-header-bg: #ffffff;
+
+  /* State layers */
+  --md-state-hover-opacity: 0.08;
+  --md-state-focus-opacity: 0.12;
+  --md-state-pressed-opacity: 0.12;
+  --md-state-dragged-opacity: 0.16;
+
+  /* Light theme specific elevation shadows */
+  --md-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
+    0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
+    0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0 1px 3px 0 rgba(0, 0, 0, 0.3),
+    0 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --md-elevation-4: 0 2px 3px 0 rgba(0, 0, 0, 0.3),
+    0 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --md-elevation-5: 0 4px 4px 0 rgba(0, 0, 0, 0.3),
+    0 8px 12px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Elevation classes */
+.md-elevation-0 {
+  box-shadow: var(--md-elevation-0);
+}
+.md-elevation-1 {
+  box-shadow: var(--md-elevation-1);
+}
+.md-elevation-2 {
+  box-shadow: var(--md-elevation-2);
+}
+.md-elevation-3 {
+  box-shadow: var(--md-elevation-3);
+}
+.md-elevation-4 {
+  box-shadow: var(--md-elevation-4);
+}
+.md-elevation-5 {
+  box-shadow: var(--md-elevation-5);
+}
+
+/* Surface tint overlay for elevated surfaces */
+.md-surface-tint {
+  position: relative;
+}
+
+.md-surface-tint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--md-primary);
+  opacity: 0;
+  transition: opacity var(--md-transition-duration-medium)
+    var(--md-transition-easing-standard);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.md-surface-tint.md-elevation-1::before {
+  opacity: 0.05;
+}
+.md-surface-tint.md-elevation-2::before {
+  opacity: 0.08;
+}
+.md-surface-tint.md-elevation-3::before {
+  opacity: 0.11;
+}
+.md-surface-tint.md-elevation-4::before {
+  opacity: 0.12;
+}
+.md-surface-tint.md-elevation-5::before {
+  opacity: 0.14;
+}
+
+/* Ripple effect base */
+.md-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--md-on-surface);
+  opacity: 0;
+  transition: opacity var(--md-transition-duration-short)
+    var(--md-transition-easing-standard);
+  pointer-events: none;
+}
+
+.md-ripple:hover::before {
+  opacity: var(--md-state-hover-opacity);
+}
+
+.md-ripple:focus::before {
+  opacity: var(--md-state-focus-opacity);
+}
+
+.md-ripple:active::before {
+  opacity: var(--md-state-pressed-opacity);
+}
+
+/* Theme transition */
+body {
+  transition: background-color var(--md-transition-duration-long)
+      var(--md-transition-easing-standard),
+    color var(--md-transition-duration-long)
+      var(--md-transition-easing-standard);
+}
+
+/* Smooth theme transitions for all themed elements */
+* {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: var(--md-transition-duration-medium);
+  transition-timing-function: var(--md-transition-easing-standard);
+}
+
+/* Prevent transition on initial load */
+.preload * {
+  transition: none !important;
+}

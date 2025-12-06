@@ -1,9 +1,10 @@
 body {
 	margin: 0;
-	font-family: 'Roboto', Arial, sans-serif;
+	font-family: var(--md-font-family);
 	height: 100vh;
 	overflow: hidden;
-	background: #fff;
+	background: var(--md-background);
+	color: var(--md-on-background);
 }
 
 .login-page{
@@ -15,16 +16,16 @@ flex-direction: column;
 .container {
 	display: flex;
 	height: 100vh;
-	background: #fff;
+	background: var(--md-background);
 }
 
 .sidebar {
 	width: 250px;
-	background: #fff;
-	border-right: 1px solid #e0e0e0;
+	background: var(--md-sidebar-bg);
+	border-right: 1px solid var(--md-outline-variant);
 	display: flex;
 	flex-direction: column;
-	box-shadow: 2px 0 8px #e0e0e0a0;
+	box-shadow: var(--md-elevation-2);
 	transition: opacity 0.3s ease;
 }
 
@@ -32,8 +33,8 @@ flex-direction: column;
 	display: flex;
 	align-items: center;
 	padding: 17.2px 18px 10px 17px;
-	background: #fff;
-	border-bottom: 1px solid #dcdcdc;
+	background: var(--md-surface-container);
+	border-bottom: 1px solid var(--md-outline-variant);
 	position: relative;
 }
 
@@ -51,7 +52,7 @@ flex-direction: column;
 }
 
 .settings-btn:hover {
-	background: #f5f5f5;
+	background: rgba(var(--md-primary), var(--md-state-hover-opacity));
 }
 
 .settings-btn svg {
@@ -61,11 +62,11 @@ flex-direction: column;
 /* Settings sidebar overlay styles */
 .settings-sidebar {
 	width: 250px;
-	background: #fff;
-	border-right: 1px solid #e0e0e0;
+	background: var(--md-surface);
+	border-right: 1px solid var(--md-outline-variant);
 	display: flex;
 	flex-direction: column;
-	box-shadow: 2px 0 10px #e0e0e0a0;
+	box-shadow: var(--md-elevation-3);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -83,8 +84,8 @@ flex-direction: column;
     display: flex;
     align-items: center;
     padding: 19.2px 18px 18px 12px;
-    background: #fff;
-    border-bottom: 1px solid #dcdcdc;
+    background: var(--md-surface-container);
+    border-bottom: 1px solid var(--md-outline-variant);
     position: relative;
 }
 
@@ -109,14 +110,14 @@ flex-direction: column;
 	font-size: 1.3rem;
 	font-weight: 600;
 	margin: 0;
-	color: #30a8f7;
+	color: var(--md-primary);
 }
 
 .settings-content {
 	flex: 1;
 	padding: 20px;
 	overflow-y: auto;
-	background: #fff;
+	background: var(--md-surface);
 }
 
 .settings-section {
@@ -127,8 +128,8 @@ flex-direction: column;
 	font-size: 1.1rem;
 	font-weight: 600;
 	margin-bottom: 12px;
-	color: #222;
-	border-bottom: 1px solid #f0f0f0;
+	color: var(--md-on-surface);
+	border-bottom: 1px solid var(--md-outline-variant);
 	padding-bottom: 8px;
 }
 
@@ -137,7 +138,7 @@ flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
 	font-size: 1rem;
-	color: #222;
+	color: var(--md-on-surface);
 	margin-bottom: 12px;
 	padding: 8px 0;
 }
@@ -149,7 +150,7 @@ flex-direction: column;
 
 .settings-item-description {
 	font-size: 0.9rem;
-	color: #666;
+	color: var(--md-on-surface-variant);
 	margin-top: 4px;
 }
 
@@ -314,7 +315,7 @@ flex-direction: column;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: #e0e0e0;
+	background: var(--md-surface-variant);
 	border-radius: 22px;
 	transition: background-color 0.3s ease;
 }
@@ -326,14 +327,14 @@ flex-direction: column;
 	width: 16px;
 	left: 3px;
 	bottom: 3px;
-	background: #fff;
+	background: var(--md-surface);
 	border-radius: 50%;
-	box-shadow: 0 1px 4px #0001;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 	transition: transform 0.3s ease;
 }
 
 .switch input:checked+.slider {
-	background: #30a8f7;
+	background: var(--md-primary);
 }
 
 .switch input:checked+.slider:before {
@@ -365,8 +366,8 @@ flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
 	padding: 18px 0 18px 0;
-	background: #fff;
-	border-bottom: 1px solid #e0e0e0;
+	background: var(--md-surface-container);
+	border-bottom: 1px solid var(--md-outline-variant);
 	font-size: 1.13rem;
 	font-weight: 600;
 	letter-spacing: 1px;
@@ -387,17 +388,17 @@ flex-direction: column;
 .sidebar .rooms {
 	flex: 1;
 	overflow-y: auto;
-	background: #fff;
+	background: var(--md-surface);
 }
 
 .room {
 	display: flex;
 	align-items: center;
 	padding: 20px 15px;
-	border-bottom: 2px solid #ededed3b;
+	border-bottom: 2px solid var(--md-outline-variant);
 	cursor: pointer;
-	background: #fff;
-	border-radius: 10px;
+	background: var(--md-surface-container-low);
+	border-radius: var(--md-radius-md);
 	margin: 6px 8px;
 	box-sizing: border-box;
 	position: relative;
@@ -406,11 +407,11 @@ flex-direction: column;
 }
 
 .room.active {
-	background: #7bc0ff;
+	background: var(--md-primary-container);
 }
 
 .room.active:hover {
-	background: #7bc0ff;
+	background: var(--md-primary-container);
 }
 
 .room:hover:not(.active) {
@@ -511,18 +512,19 @@ flex-direction: column;
 	display: flex;
 	align-items: center;
 	padding: 14.6px;
-	background: #fff;
+	background: var(--md-header-bg);
 	justify-content: space-between;
 	min-height: 30px;
 	position: relative;
 	z-index: 3;
+	box-shadow: var(--md-elevation-1);
 }
 
 .main-header .group-title {
 	font-weight: bold;
 	font-size: 18px;
 	margin-left: 16px;
-	color: #222;
+	color: var(--md-on-surface);
 }
 
 .main-header-right {
@@ -592,20 +594,22 @@ flex-direction: column;
 }
 
 .bubble.me {
-	background: #e3fee0;
-	color: #222;
+	background: var(--md-chat-bubble-me);
+	color: var(--md-on-primary-container);
 	margin-left: auto;
 	border-bottom-right-radius: 0px;
 	padding: 10px 39px 7px 10px;
+	border-radius: var(--md-radius-lg) var(--md-radius-lg) 0 var(--md-radius-lg);
 }
 
 .bubble.other {
-	background: #fff;
+	background: var(--md-chat-bubble-other);
 	max-width: 100%;
-	color: #222;
+	color: var(--md-on-surface);
 	border-bottom-left-radius: 0px;
 	margin-left: 0px;
 	padding: 1px 40px 5px 10px;
+	border-radius: var(--md-radius-lg) var(--md-radius-lg) var(--md-radius-lg) 0;
 }
 
 .bubble.other .bubble-meta {
@@ -672,7 +676,7 @@ flex-direction: column;
 
 .bubble-other-name {
 	font-size: 13px;
-	color: #30a8f7;
+	color: var(--md-primary);
 	font-weight: 500;
 	margin-left: -5px;
 }
@@ -724,8 +728,8 @@ flex-direction: column;
 	position: absolute;
 	inset: 0;
 	border-radius: inherit;
-	box-shadow: 0 1px 8px 1px #0000001f;
-	background-color: var(--surface-color);
+	box-shadow: var(--md-elevation-2);
+	background-color: var(--md-chat-input-bg);
 	opacity: 1;
 	z-index: -1;
 }

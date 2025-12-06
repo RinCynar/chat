@@ -32,17 +32,11 @@ import {
 } from './util.settings.js';
 import { t, updateStaticTexts } from './util.i18n.js';
 
-// 从 util.themeManager.js 中导入主题管理功能
-// Import theme manager functions from util.themeManager.js
+// 从 util.theme.js 中导入主题功能函数
+// Import theme functions from util.theme.js
 import {
 	initTheme            // 初始化主题 / Initialize theme
-} from './util.themeManager.js';
-
-// 从 theme-ui.js 中导入主题UI组件
-// Import theme UI components from theme-ui.js
-import {
-	initThemeUI          // 初始化主题UI / Initialize theme UI
-} from './theme-ui.js';
+} from './util.theme.js';
 
 // 从 util.dom.js 中导入常用 DOM 操作函数
 // Import common DOM manipulation functions from util.dom.js
@@ -150,7 +144,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	// initSettings();
 	// updateStaticTexts(); // 在初始化设置后更新静态文本 / Update static texts after initializing settings
 	initTheme(); // 初始化主题 / Initialize theme
-	initThemeUI(); // 初始化主题UI组件 / Initialize theme UI components
 	
 	const settingsBtn = $id('settings-btn'); // 设置按钮 / Settings button
 	if (settingsBtn) {
