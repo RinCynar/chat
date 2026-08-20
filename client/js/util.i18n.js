@@ -79,6 +79,7 @@ const LANGUAGES = {
 			// Actions and menu
 			'action.share': '分享房间',
 			'action.exit': '退出房间',
+			'action.send': '发送 (Enter)',
 			'action.emoji': '表情',
 			'action.settings': '设置',
 			'action.back': '返回',
@@ -215,6 +216,7 @@ const LANGUAGES = {
 			// Actions and menu
 			'action.share': 'Share Room',
 			'action.exit': 'Exit Room',
+			'action.send': 'Send (Enter)',
 			'action.emoji': 'Emoji',
 			'action.settings': 'Settings',
 			'action.back': 'Back',
@@ -351,6 +353,7 @@ const LANGUAGES = {
 			// Actions and menu
 			'action.share': 'ルームを共有',
 			'action.exit': 'ルームから退室',
+			'action.send': '送信 (Enter)',
 			'action.emoji': '絵文字',
 			'action.settings': '設定',
 			'action.back': '戻る',

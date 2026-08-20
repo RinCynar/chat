@@ -479,22 +479,23 @@ body {
 
 /* Theme Mode Segmented Button (M3) */
 .theme-mode-segmented-btn {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 	background: var(--md-sys-color-surface-container-highest);
-	padding: 4px;
+	padding: 3px;
 	border-radius: var(--md-sys-shape-corner-full);
 	border: 1px solid var(--md-sys-color-outline-variant);
-	gap: 4px;
+	gap: 3px;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .theme-mode-segmented-btn .mode-btn {
-	flex: 1;
 	border: none;
 	background: transparent;
 	color: var(--md-sys-color-on-surface-variant);
-	padding: 8px 8px;
-	font-size: 12.5px;
+	padding: 6px 2px;
+	font-size: 11.5px;
 	font-weight: 500;
 	border-radius: var(--md-sys-shape-corner-full);
 	cursor: pointer;
@@ -502,9 +503,13 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 4px;
+	gap: 2px;
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	font-family: inherit;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .theme-mode-segmented-btn .mode-btn:hover:not(.active) {
@@ -523,22 +528,38 @@ body {
 .theme-selector {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 10px;
+	gap: 8px;
 	padding: 4px 0;
 }
 
 .theme-item {
-	height: 60px;
+	height: 52px;
 	border-radius: var(--md-sys-shape-corner-lg);
 	border: 2px solid transparent;
 	cursor: pointer;
 	display: flex;
-	align-items: center;
+	align-items: flex-end;
 	justify-content: center;
+	padding: 4px 4px 6px 4px;
 	position: relative;
 	overflow: hidden;
 	box-shadow: var(--md-sys-elevation-1);
 	transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+	box-sizing: border-box;
+}
+
+.theme-item span {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: #FFFFFF;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 92%;
+	text-align: center;
+	pointer-events: none;
+	z-index: 1;
 }
 
 .theme-item:hover {
@@ -554,10 +575,21 @@ body {
 
 .theme-item.active::after {
 	content: '✓';
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.45);
 	color: #FFFFFF;
 	font-weight: bold;
-	font-size: 16px;
-	text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	font-size: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-shadow: none;
+	z-index: 2;
 }
 
 /* ==========================================================================
@@ -998,9 +1030,11 @@ body {
 	max-width: 860px;
 	background: var(--md-sys-color-surface-container-highest);
 	border: 1px solid var(--md-sys-color-outline-variant);
-	border-radius: var(--md-sys-shape-corner-xxl);
+	border-radius: var(--md-sys-shape-corner-full);
 	box-shadow: var(--md-sys-elevation-2);
-	padding: 4px 10px 4px 14px;
+	padding: 4px 8px 4px 10px;
+	min-height: 48px;
+	box-sizing: border-box;
 	position: relative;
 	transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
@@ -1030,8 +1064,8 @@ body {
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	width: 36px;
-	height: 36px;
+	width: 38px;
+	height: 38px;
 	border-radius: var(--md-sys-shape-corner-full);
 	display: flex;
 	align-items: center;
@@ -1056,18 +1090,20 @@ body {
 	fill: currentColor;
 }
 
-/* Text Input Container */
+/* Text Input Container: Perfect Single-Row Grid Overlay */
 .input-message-container {
 	flex: 1;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	align-items: center;
 	position: relative;
-	justify-content: center;
-	min-height: 40px;
-	max-height: 140px;
+	min-height: 24px;
+	max-height: 120px;
+	padding: 0 4px;
+	box-sizing: border-box;
 }
 
 .input-message-input {
+	grid-area: 1 / 1;
 	min-height: 24px;
 	max-height: 120px;
 	outline: none;
@@ -1075,7 +1111,7 @@ body {
 	background: transparent;
 	font-size: 15px;
 	line-height: 24px;
-	padding: 8px 0;
+	padding: 2px 0;
 	margin: 0;
 	color: var(--md-sys-color-on-surface);
 	width: 100%;
@@ -1083,17 +1119,24 @@ body {
 	white-space: pre-wrap;
 	word-break: break-word;
 	font-family: inherit;
+	z-index: 2;
+	box-sizing: border-box;
 }
 
 .input-field-placeholder {
-	position: absolute;
-	left: 0;
-	top: 50%;
-	transform: translateY(-50%);
+	grid-area: 1 / 1;
+	min-height: 24px;
+	line-height: 24px;
+	padding: 2px 0;
+	margin: 0;
 	color: var(--md-sys-color-outline);
 	font-size: 15px;
 	pointer-events: none;
 	user-select: none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	z-index: 1;
 	transition: opacity var(--md-sys-motion-duration-short) ease;
 }
 

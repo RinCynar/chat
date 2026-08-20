@@ -23,6 +23,7 @@ import {
 	t
 } from './util.i18n.js';
 import {
+	renderChatArea,
 	updateChatInputStyle
 } from './chat.js';
 import {
@@ -379,13 +380,6 @@ export function renderUserList(updateHeader = false) {
 	const me = rd.userList.find(u => u.clientId === rd.myId);
 	const others = rd.userList.filter(u => u.clientId !== rd.myId);
 	
-	if (others.length > 0) {
-		const tip = document.createElement('div');
-		tip.className = 'member-tip';
-		tip.textContent = t('ui.start_private_chat', '点击用户头像发起端到端私聊');
-		userListEl.appendChild(tip);
-	}
-	
 	if (me) userListEl.appendChild(createUserItem(me, true));
 	others.forEach(u => userListEl.appendChild(createUserItem(u, false)));
 	
@@ -673,6 +667,7 @@ export function initLoginForm() {
 window.addEventListener('languageChange', () => {
 	renderMainHeader();
 	renderUserList(false);
+	renderChatArea();
 	updateChatInputStyle();
 });
 

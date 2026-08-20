@@ -34,14 +34,14 @@ export function renderChatArea() {
 	if (!chatArea) return;
 	if (activeRoomIndex < 0 || !roomsData[activeRoomIndex]) {
 		chatArea.innerHTML = '';
-		return
+		return;
 	}
 	chatArea.innerHTML = '';
 	roomsData[activeRoomIndex].messages.forEach(m => {
 		if (m.type === 'me') addMsg(m.text, true, m.msgType || 'text', m.timestamp);
-		else if (m.type === 'system') addSystemMsg(m.text, true, m.timestamp);
-		else addOtherMsg(m.text, m.userName, m.avatar, true, m.msgType || 'text', m.timestamp)
-	})
+		else if (m.type === 'system') addSystemMsg(m.key ? t(m.key, m.text) : m.text, true, m.timestamp, m.key);
+		else addOtherMsg(m.text, m.userName, m.avatar, true, m.msgType || 'text', m.timestamp);
+	});
 }
 
 // Add a message to the chat area
@@ -206,23 +206,24 @@ export function addOtherMsg(msg, userName = '', avatar = '', isHistory = false, 
 
 // Add a system message to the chat area
 // 添加系统消息到聊天区域
-export function addSystemMsg(text, isHistory = false, timestamp = null) {
+export function addSystemMsg(text, isHistory = false, timestamp = null, key = null) {
 	if (!isHistory && activeRoomIndex >= 0) {
 		const ts = timestamp || Date.now();
 		roomsData[activeRoomIndex].messages.push({
 			type: 'system',
 			text,
+			key,
 			timestamp: ts
-		})
+		});
 	}
 	const chatArea = $id('chat-area');
 	if (!chatArea) return;
-	const safeText = textToHTML(text);
+	const safeText = textToHTML(key ? t(key, text) : text);
 	const div = createElement('div', {
 		class: 'bubble system'
 	}, `<span class="bubble-content">${safeText}</span>`);
 	chatArea.appendChild(div);
-	chatArea.scrollTop = chatArea.scrollHeight
+	chatArea.scrollTop = chatArea.scrollHeight;
 }
 
 // Update the style of the chat input area
@@ -372,12 +373,12 @@ function renderFileMessage(fileData, isSender) {
 		if (transfer.status === 'sending') {
 			const progress = (transfer.sentVolumes / transfer.totalVolumes) * 100;
 			progressWidth = `${progress}%`;
-			statusText = `Sending ${transfer.sentVolumes}/${transfer.totalVolumes}`;
+			statusText = `${t('file.sending', 'Sending')} ${transfer.sentVolumes}/${transfer.totalVolumes}`;
 			showProgress = true;
 		} else if (transfer.status === 'receiving') {
 			const progress = (transfer.receivedVolumes.size / transfer.totalVolumes) * 100;
 			progressWidth = `${progress}%`;
-			statusText = `Receiving ${transfer.receivedVolumes.size}/${transfer.totalVolumes}`;
+			statusText = `${t('file.receiving', 'Receiving')} ${transfer.receivedVolumes.size}/${transfer.totalVolumes}`;
 			showProgress = true;
 		} else if (transfer.status === 'completed') {
 			// 完成时不显示任何状态，只显示下载按钮
@@ -421,8 +422,13 @@ function renderFileMessage(fileData, isSender) {
 export function autoGrowInput() {
 	const input = $('.input-message-input');
 	if (!input) return;
-	input.style.height = 'auto';
-	input.style.height = input.scrollHeight + 'px'
+	const html = input.innerHTML.replace(/<br\s*\/?>(\s*)?/gi, '').replace(/&nbsp;/g, '').replace(/\u200B/g, '').trim();
+	if (html === '') {
+		input.style.height = '24px';
+	} else {
+		input.style.height = 'auto';
+		input.style.height = Math.min(120, Math.max(24, input.scrollHeight)) + 'px';
+	}
 }
 
 // Handle pasting text as plain text

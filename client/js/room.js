@@ -138,7 +138,7 @@ export function joinRoom(userName, roomName, password, modal = null, onResult) {
 				closed = true;
 				onResult(true)
 			}
-			addSystemMsg(t('system.secured', 'connection secured'))
+			addSystemMsg(t('system.secured', 'Connection secured'), false, null, 'system.secured');
 		},
 		onClientSecured: (user) => handleClientSecured(idx, user),
 		onClientList: (list, selfId) => handleClientList(idx, list, selfId),
