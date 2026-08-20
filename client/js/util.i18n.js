@@ -44,6 +44,9 @@ const LANGUAGES = {
 			'settings.language_switch': 'Language',
 			'settings.chinese': 'Chinese',
 			'settings.english': 'English',
+			'settings.dark_mode': 'Dark Mode',
+			'settings.theme_dark': 'Dark theme active',
+			'settings.theme_light': 'Light theme active',
 			
 			// File upload and transfer
 			'file.selected_files': 'Selected Files',
@@ -168,6 +171,9 @@ const LANGUAGES = {
 			'settings.language_switch': '语言',
 			'settings.chinese': '中文',
 			'settings.english': 'English',
+			'settings.dark_mode': '深色模式',
+			'settings.theme_dark': '深色主题已启用',
+			'settings.theme_light': '浅色主题已启用',
 			
 			// File upload and transfer
 			'file.selected_files': '已选择的文件',
