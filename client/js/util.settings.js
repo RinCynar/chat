@@ -134,7 +134,8 @@ function setupSettingsPanel() {
 			<div class="settings-section-title">${t('settings.theme', 'Theme Settings')}</div>
 			<div class="theme-selector" id="theme-selector">
 				${THEMES.map(theme => `
-					<div class="theme-item ${settings.theme === theme.id ? 'active' : ''}" data-theme-id="${theme.id}" style="background: ${theme.background}; background-size: cover; background-position: center;">
+					<div class="theme-item ${settings.theme === theme.id ? 'active' : ''}" data-theme-id="${theme.id}" style="background: linear-gradient(135deg, ${theme.color} 50%, ${theme.palette['--md-sys-color-primary-container'] || theme.color} 50%);" title="${theme.name}">
+						<span style="position: absolute; bottom: 4px; font-size: 10px; font-weight: 600; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">${theme.name.split(' ')[0]}</span>
 					</div>
 				`).join('')}
 			</div>

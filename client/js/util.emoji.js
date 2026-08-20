@@ -11,8 +11,37 @@ const addEmojiPickerStyles = () => {
 	if (document.querySelector('#emoji-picker-styles')) return;
 	const style = document.createElement('style');
 	style.id = 'emoji-picker-styles';
-	style.textContent = `emoji-picker{--background:#fff;--border-color:rgba(0,0,0,0.1);--border-radius:10px;--emoji-padding:0.4rem;--category-emoji-size:1.2rem;--font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;position:absolute;bottom:60px;left:22px;z-index:5;box-shadow:0 3px 12px rgba(0,0,0,0.15);display:none;opacity:0;transform:translateY(-10px) scale(0.95);transition:opacity 0.3s ease,transform 0.3s ease}emoji-picker.show{opacity:1;transform:translateY(0) scale(1)}`;
-	document.head.appendChild(style)
+	style.textContent = `
+		emoji-picker {
+			--background: var(--md-sys-color-surface-container-highest, #E6E0E9);
+			--border-color: var(--md-sys-color-outline-variant, rgba(0,0,0,0.1));
+			--border-radius: var(--md-sys-shape-corner-xl, 20px);
+			--emoji-padding: 0.4rem;
+			--category-emoji-size: 1.2rem;
+			--indicator-color: var(--md-sys-color-primary, #0B57D0);
+			--font-family: var(--md-sys-font, sans-serif);
+			position: absolute;
+			bottom: 56px;
+			left: 0;
+			z-index: 50;
+			box-shadow: var(--md-sys-elevation-3, 0 4px 16px rgba(0,0,0,0.15));
+			display: none;
+			opacity: 0;
+			transform: translateY(-8px) scale(0.95);
+			transition: opacity 0.2s ease, transform 0.2s ease;
+		}
+		emoji-picker.show {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+		@media (max-width: 768px) {
+			emoji-picker {
+				left: -10px;
+				max-width: 90vw;
+			}
+		}
+	`;
+	document.head.appendChild(style);
 };
 // Setup emoji picker for chat input
 // 为聊天输入框设置 emoji 选择器
