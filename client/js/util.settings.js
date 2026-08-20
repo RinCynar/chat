@@ -24,7 +24,7 @@ import { t, setLanguage, getCurrentLanguage, initI18n } from './util.i18n.js';
 const DEFAULT_SETTINGS = {
 	notify: false,
 	sound: false,
-	theme: 'theme-sapphire',
+	theme: 'theme-miku',
 	themeMode: 'system' // 'system' | 'light' | 'dark'
 };
 
@@ -89,6 +89,7 @@ function setupSettingsPanel() {
 	const settings = loadSettings();
 	const currentTheme = getCurrentTheme();
 	const currentMode = settings.themeMode || 'system';
+	const currentLang = getCurrentLanguage();
 	
 	// Update settings title
 	if (settingsTitle) {
@@ -117,11 +118,14 @@ function setupSettingsPanel() {
 		<div class="settings-section">
 			<div class="settings-section-title">${t('settings.theme_palette', 'Material You 调色板')}</div>
 			<div class="theme-selector" id="theme-selector">
-				${THEMES.map(theme => `
-					<div class="theme-item ${currentTheme.id === theme.id ? 'active' : ''}" data-theme-id="${theme.id}" style="background: ${theme.color};" title="${theme.nameZh || theme.name}">
-						<span style="position: absolute; bottom: 4px; font-size: 10px; font-weight: 600; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">${theme.nameZh || theme.name.split(' ')[0]}</span>
-					</div>
-				`).join('')}
+				${THEMES.map(theme => {
+					const themeLabel = currentLang === 'zh' ? theme.nameZh : (currentLang === 'ja' ? theme.nameJa : theme.name.split(' ')[0]);
+					return `
+						<div class="theme-item ${currentTheme.id === theme.id ? 'active' : ''}" data-theme-id="${theme.id}" style="background: ${theme.color};" title="${theme.name}">
+							<span style="position: absolute; bottom: 4px; font-size: 10px; font-weight: 600; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">${themeLabel}</span>
+						</div>
+					`;
+				}).join('')}
 			</div>
 		</div>
 
@@ -157,8 +161,9 @@ function setupSettingsPanel() {
 				</div>
 				<div class="language-selector">
 					<select id="settings-language" class="language-select">
-						<option value="en" ${settings.language === 'en' ? 'selected' : ''}>🇺🇸 English</option>
-						<option value="zh" ${settings.language === 'zh' ? 'selected' : ''}>🇨🇳 中文</option>
+						<option value="zh" ${currentLang === 'zh' ? 'selected' : ''}>🇨🇳 中文</option>
+						<option value="en" ${currentLang === 'en' ? 'selected' : ''}>🇺🇸 English</option>
+						<option value="ja" ${currentLang === 'ja' ? 'selected' : ''}>🇯🇵 日本語</option>
 					</select>
 				</div>
 			</div>

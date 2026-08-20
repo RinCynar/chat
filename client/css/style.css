@@ -3,42 +3,42 @@
    ========================================================================== */
 
 :root {
-	/* Material Design 3 Default Theme Tokens (Sapphire Ocean) */
-	--md-sys-color-primary: #0B57D0;
+	/* Material Design 3 Default Theme Tokens (Seed Color: #39C5BB Miku Cyan) */
+	--md-sys-color-primary: #006A62;
 	--md-sys-color-on-primary: #FFFFFF;
-	--md-sys-color-primary-container: #D3E3FD;
-	--md-sys-color-on-primary-container: #041E49;
+	--md-sys-color-primary-container: #B8F6EE;
+	--md-sys-color-on-primary-container: #00201D;
 	
-	--md-sys-color-secondary: #535F70;
+	--md-sys-color-secondary: #4A6360;
 	--md-sys-color-on-secondary: #FFFFFF;
-	--md-sys-color-secondary-container: #D7E3F8;
-	--md-sys-color-on-secondary-container: #101C2B;
+	--md-sys-color-secondary-container: #CCE8E4;
+	--md-sys-color-on-secondary-container: #051F1D;
 	
 	--md-sys-color-tertiary: #6750A4;
 	--md-sys-color-on-tertiary: #FFFFFF;
 	--md-sys-color-tertiary-container: #EADDFF;
 	--md-sys-color-on-tertiary-container: #21005D;
 	
-	--md-sys-color-surface: #F8F9FA;
-	--md-sys-color-on-surface: #1F1F1F;
-	--md-sys-color-surface-variant: #E1E3E1;
-	--md-sys-color-on-surface-variant: #444746;
+	--md-sys-color-surface: #F4FAFA;
+	--md-sys-color-on-surface: #161C1C;
+	--md-sys-color-surface-variant: #DAE5E3;
+	--md-sys-color-on-surface-variant: #3F4947;
 	
 	--md-sys-color-surface-container-lowest: #FFFFFF;
-	--md-sys-color-surface-container-low: #F3F4F6;
-	--md-sys-color-surface-container: #EDEFF1;
-	--md-sys-color-surface-container-high: #E7E9EC;
-	--md-sys-color-surface-container-highest: #E1E3E6;
+	--md-sys-color-surface-container-low: #EEF5F4;
+	--md-sys-color-surface-container: #E8EFEF;
+	--md-sys-color-surface-container-high: #E2EAE9;
+	--md-sys-color-surface-container-highest: #DCE4E3;
 	
-	--md-sys-color-outline: #747775;
-	--md-sys-color-outline-variant: #C4C7C5;
+	--md-sys-color-outline: #6F7977;
+	--md-sys-color-outline-variant: #BFC9C7;
 	
 	--md-sys-color-error: #BA1A1A;
 	--md-sys-color-error-container: #FFDAD6;
 	--md-sys-color-on-error-container: #410002;
 	
 	--md-sys-color-shadow: rgba(0, 0, 0, 0.08);
-	--md-sys-color-app-bg: radial-gradient(at 10% 10%, rgba(11, 87, 208, 0.05) 0px, transparent 50%), radial-gradient(at 90% 90%, rgba(103, 80, 164, 0.04) 0px, transparent 50%), #F8F9FA;
+	--md-sys-color-app-bg: radial-gradient(at 10% 10%, rgba(57, 197, 187, 0.08) 0px, transparent 50%), radial-gradient(at 90% 90%, rgba(103, 80, 164, 0.04) 0px, transparent 50%), #F4FAFA;
 
 	/* Elevation Shadows */
 	--md-sys-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.07), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);

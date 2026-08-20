@@ -3,9 +3,77 @@
 
 export const THEMES = [
 	{
+		id: 'theme-miku',
+		name: 'Miku Cyan',
+		nameZh: '初音青',
+		nameJa: 'ミクシアン',
+		color: '#39C5BB',
+		light: {
+			'--md-sys-color-primary': '#006A62',
+			'--md-sys-color-on-primary': '#FFFFFF',
+			'--md-sys-color-primary-container': '#B8F6EE',
+			'--md-sys-color-on-primary-container': '#00201D',
+			'--md-sys-color-secondary': '#4A6360',
+			'--md-sys-color-on-secondary': '#FFFFFF',
+			'--md-sys-color-secondary-container': '#CCE8E4',
+			'--md-sys-color-on-secondary-container': '#051F1D',
+			'--md-sys-color-tertiary': '#6750A4',
+			'--md-sys-color-on-tertiary': '#FFFFFF',
+			'--md-sys-color-tertiary-container': '#EADDFF',
+			'--md-sys-color-on-tertiary-container': '#21005D',
+			'--md-sys-color-surface': '#F4FAFA',
+			'--md-sys-color-on-surface': '#161C1C',
+			'--md-sys-color-surface-variant': '#DAE5E3',
+			'--md-sys-color-on-surface-variant': '#3F4947',
+			'--md-sys-color-surface-container-lowest': '#FFFFFF',
+			'--md-sys-color-surface-container-low': '#EEF5F4',
+			'--md-sys-color-surface-container': '#E8EFEF',
+			'--md-sys-color-surface-container-high': '#E2EAE9',
+			'--md-sys-color-surface-container-highest': '#DCE4E3',
+			'--md-sys-color-outline': '#6F7977',
+			'--md-sys-color-outline-variant': '#BFC9C7',
+			'--md-sys-color-error': '#BA1A1A',
+			'--md-sys-color-error-container': '#FFDAD6',
+			'--md-sys-color-on-error-container': '#410002',
+			'--md-sys-color-shadow': 'rgba(0, 0, 0, 0.08)',
+			'--md-sys-color-app-bg': 'radial-gradient(at 10% 10%, rgba(57, 197, 187, 0.08) 0px, transparent 50%), radial-gradient(at 90% 90%, rgba(103, 80, 164, 0.04) 0px, transparent 50%), #F4FAFA'
+		},
+		dark: {
+			'--md-sys-color-primary': '#53DBCF',
+			'--md-sys-color-on-primary': '#003733',
+			'--md-sys-color-primary-container': '#00504A',
+			'--md-sys-color-on-primary-container': '#72F8EB',
+			'--md-sys-color-secondary': '#B0CCC7',
+			'--md-sys-color-on-secondary': '#1C3532',
+			'--md-sys-color-secondary-container': '#324B48',
+			'--md-sys-color-on-secondary-container': '#CCE8E4',
+			'--md-sys-color-tertiary': '#D0BCFF',
+			'--md-sys-color-on-tertiary': '#381E72',
+			'--md-sys-color-tertiary-container': '#4F378B',
+			'--md-sys-color-on-tertiary-container': '#EADDFF',
+			'--md-sys-color-surface': '#0E1514',
+			'--md-sys-color-on-surface': '#DEE4E3',
+			'--md-sys-color-surface-variant': '#3F4947',
+			'--md-sys-color-on-surface-variant': '#BFC9C7',
+			'--md-sys-color-surface-container-lowest': '#090F0E',
+			'--md-sys-color-surface-container-low': '#161D1C',
+			'--md-sys-color-surface-container': '#1A2120',
+			'--md-sys-color-surface-container-high': '#242C2B',
+			'--md-sys-color-surface-container-highest': '#2F3735',
+			'--md-sys-color-outline': '#899391',
+			'--md-sys-color-outline-variant': '#3F4947',
+			'--md-sys-color-error': '#FFB4AB',
+			'--md-sys-color-error-container': '#93000A',
+			'--md-sys-color-on-error-container': '#FFDAD6',
+			'--md-sys-color-shadow': 'rgba(0, 0, 0, 0.45)',
+			'--md-sys-color-app-bg': 'radial-gradient(at 10% 10%, rgba(57, 197, 187, 0.12) 0px, transparent 50%), radial-gradient(at 90% 90%, rgba(208, 188, 255, 0.06) 0px, transparent 50%), #0E1514'
+		}
+	},
+	{
 		id: 'theme-sapphire',
 		name: 'Sapphire Ocean',
 		nameZh: '海蓝宝石',
+		nameJa: 'サファイアブルー',
 		color: '#0B57D0',
 		light: {
 			'--md-sys-color-primary': '#0B57D0',
@@ -72,6 +140,7 @@ export const THEMES = [
 		id: 'theme-sage',
 		name: 'Botanical Sage',
 		nameZh: '鼠尾草绿',
+		nameJa: 'ボタニカルセージ',
 		color: '#2E6C56',
 		light: {
 			'--md-sys-color-primary': '#2E6C56',
@@ -138,6 +207,7 @@ export const THEMES = [
 		id: 'theme-coral',
 		name: 'Sunset Coral',
 		nameZh: '日落暖珊瑚',
+		nameJa: 'サンセットコーラル',
 		color: '#B93E2B',
 		light: {
 			'--md-sys-color-primary': '#B93E2B',
@@ -204,6 +274,7 @@ export const THEMES = [
 		id: 'theme-lavender',
 		name: 'Lavender Iris',
 		nameZh: '薰衣草紫',
+		nameJa: 'ラベンダーアイリス',
 		color: '#6750A4',
 		light: {
 			'--md-sys-color-primary': '#6750A4',
@@ -267,75 +338,10 @@ export const THEMES = [
 		}
 	},
 	{
-		id: 'theme-teal',
-		name: 'Ocean Teal',
-		nameZh: '远洋水绿',
-		color: '#006874',
-		light: {
-			'--md-sys-color-primary': '#006874',
-			'--md-sys-color-on-primary': '#FFFFFF',
-			'--md-sys-color-primary-container': '#9EEFFD',
-			'--md-sys-color-on-primary-container': '#001F24',
-			'--md-sys-color-secondary': '#4A6267',
-			'--md-sys-color-on-secondary': '#FFFFFF',
-			'--md-sys-color-secondary-container': '#CCE8ED',
-			'--md-sys-color-on-secondary-container': '#051F23',
-			'--md-sys-color-tertiary': '#6750A4',
-			'--md-sys-color-on-tertiary': '#FFFFFF',
-			'--md-sys-color-tertiary-container': '#EADDFF',
-			'--md-sys-color-on-tertiary-container': '#21005D',
-			'--md-sys-color-surface': '#F4FAFB',
-			'--md-sys-color-on-surface': '#161C1D',
-			'--md-sys-color-surface-variant': '#DAE4E6',
-			'--md-sys-color-on-surface-variant': '#3F484A',
-			'--md-sys-color-surface-container-lowest': '#FFFFFF',
-			'--md-sys-color-surface-container-low': '#EDF5F6',
-			'--md-sys-color-surface-container': '#E7F0F1',
-			'--md-sys-color-surface-container-high': '#E1EAEC',
-			'--md-sys-color-surface-container-highest': '#DBE5E6',
-			'--md-sys-color-outline': '#6F797B',
-			'--md-sys-color-outline-variant': '#BFC8CA',
-			'--md-sys-color-error': '#BA1A1A',
-			'--md-sys-color-error-container': '#FFDAD6',
-			'--md-sys-color-on-error-container': '#410002',
-			'--md-sys-color-shadow': 'rgba(0, 0, 0, 0.08)',
-			'--md-sys-color-app-bg': 'radial-gradient(at 10% 10%, rgba(0, 104, 116, 0.05) 0px, transparent 50%), radial-gradient(at 90% 90%, rgba(74, 98, 103, 0.04) 0px, transparent 50%), #F4FAFB'
-		},
-		dark: {
-			'--md-sys-color-primary': '#82D3E0',
-			'--md-sys-color-on-primary': '#00363D',
-			'--md-sys-color-primary-container': '#004F58',
-			'--md-sys-color-on-primary-container': '#9EEFFD',
-			'--md-sys-color-secondary': '#B1CBD0',
-			'--md-sys-color-on-secondary': '#1C3438',
-			'--md-sys-color-secondary-container': '#334B4F',
-			'--md-sys-color-on-secondary-container': '#CCE8ED',
-			'--md-sys-color-tertiary': '#D0BCFF',
-			'--md-sys-color-on-tertiary': '#381E72',
-			'--md-sys-color-tertiary-container': '#4F378B',
-			'--md-sys-color-on-tertiary-container': '#EADDFF',
-			'--md-sys-color-surface': '#0E1415',
-			'--md-sys-color-on-surface': '#DEE3E4',
-			'--md-sys-color-surface-variant': '#3F484A',
-			'--md-sys-color-on-surface-variant': '#BFC8CA',
-			'--md-sys-color-surface-container-lowest': '#090F10',
-			'--md-sys-color-surface-container-low': '#161D1E',
-			'--md-sys-color-surface-container': '#1B2122',
-			'--md-sys-color-surface-container-high': '#252B2C',
-			'--md-sys-color-surface-container-highest': '#303637',
-			'--md-sys-color-outline': '#899294',
-			'--md-sys-color-outline-variant': '#3F484A',
-			'--md-sys-color-error': '#FFB4AB',
-			'--md-sys-color-error-container': '#93000A',
-			'--md-sys-color-on-error-container': '#FFDAD6',
-			'--md-sys-color-shadow': 'rgba(0, 0, 0, 0.45)',
-			'--md-sys-color-app-bg': 'radial-gradient(at 10% 10%, rgba(130, 211, 224, 0.09) 0px, transparent 50%), radial-gradient(at 90% 90%, rgba(208, 188, 255, 0.06) 0px, transparent 50%), #0E1415'
-		}
-	},
-	{
 		id: 'theme-amber',
 		name: 'Amber Golden',
 		nameZh: '琥珀暖金',
+		nameJa: 'アンバーゴールド',
 		color: '#8A5100',
 		light: {
 			'--md-sys-color-primary': '#8A5100',
@@ -420,20 +426,20 @@ export function isDarkMode() {
 	return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
-// Get current theme from settings
-// 从设置中获取当前主题
+// Get current theme from settings (defaults to #39C5BB Miku Cyan)
+// 从设置中获取当前主题（默认为 #39C5BB 初音青）
 export function getCurrentTheme() {
 	try {
 		const settings = JSON.parse(localStorage.getItem('settings') || '{}');
 		const themeId = settings.theme || THEMES[0].id;
 		
 		// Backward compatibility mapping
-		if (themeId === 'theme1' || themeId === 'theme-sapphire') return THEMES[0];
-		if (themeId === 'theme2' || themeId === 'theme-sage') return THEMES[1];
-		if (themeId === 'theme3' || themeId === 'theme-coral') return THEMES[2];
-		if (themeId === 'theme4' || themeId === 'theme-lavender') return THEMES[3];
-		if (themeId === 'theme5' || themeId === 'theme-teal') return THEMES[4];
-		if (themeId === 'theme6' || themeId === 'theme7' || themeId === 'theme-amber' || themeId === 'theme-midnight') return THEMES[5];
+		if (themeId === 'theme-miku') return THEMES[0];
+		if (themeId === 'theme1' || themeId === 'theme-sapphire') return THEMES[1];
+		if (themeId === 'theme2' || themeId === 'theme-sage') return THEMES[2];
+		if (themeId === 'theme3' || themeId === 'theme-coral') return THEMES[3];
+		if (themeId === 'theme4' || themeId === 'theme-lavender') return THEMES[4];
+		if (themeId === 'theme5' || themeId === 'theme-amber' || themeId === 'theme-teal') return THEMES[5];
 		
 		return THEMES.find(theme => theme.id === themeId) || THEMES[0];
 	} catch {
@@ -511,7 +517,7 @@ export function updateQuickModeToggleIcons() {
 				<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
 			</svg>
 		`;
-		btn.title = dark ? '切换为浅色模式' : '切换为深色模式';
+		btn.title = dark ? 'Light Mode' : 'Dark Mode';
 	});
 }
 
