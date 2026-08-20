@@ -115,11 +115,18 @@
 	line-height: 1.4;
 }
 
-/* Help / Back Button on Flip Card */
-.help-btn {
+/* Card Top Action Buttons (Theme Toggle + Help) */
+.card-top-actions {
 	position: absolute;
 	top: 20px;
 	right: 20px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	z-index: 10;
+}
+
+.help-btn {
 	background: var(--md-sys-color-surface-container-high);
 	border: 1px solid var(--md-sys-color-outline-variant);
 	color: var(--md-sys-color-on-surface-variant);
@@ -131,7 +138,12 @@
 	align-items: center;
 	justify-content: center;
 	transition: all var(--md-sys-motion-duration-short) ease;
-	z-index: 10;
+}
+
+.help-btn.back-btn {
+	position: absolute;
+	top: 20px;
+	right: 20px;
 }
 
 .help-btn:hover {

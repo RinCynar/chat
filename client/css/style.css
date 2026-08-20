@@ -477,6 +477,48 @@ body {
 	box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
 }
 
+/* Theme Mode Segmented Button (M3) */
+.theme-mode-segmented-btn {
+	display: flex;
+	background: var(--md-sys-color-surface-container-highest);
+	padding: 4px;
+	border-radius: var(--md-sys-shape-corner-full);
+	border: 1px solid var(--md-sys-color-outline-variant);
+	gap: 4px;
+	width: 100%;
+}
+
+.theme-mode-segmented-btn .mode-btn {
+	flex: 1;
+	border: none;
+	background: transparent;
+	color: var(--md-sys-color-on-surface-variant);
+	padding: 8px 8px;
+	font-size: 12.5px;
+	font-weight: 500;
+	border-radius: var(--md-sys-shape-corner-full);
+	cursor: pointer;
+	transition: all var(--md-sys-motion-duration-short) ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	white-space: nowrap;
+	font-family: inherit;
+}
+
+.theme-mode-segmented-btn .mode-btn:hover:not(.active) {
+	background: var(--md-sys-color-surface-container-low);
+	color: var(--md-sys-color-on-surface);
+}
+
+.theme-mode-segmented-btn .mode-btn.active {
+	background: var(--md-sys-color-primary-container);
+	color: var(--md-sys-color-on-primary-container);
+	font-weight: 600;
+	box-shadow: var(--md-sys-elevation-1);
+}
+
 /* Material You Dynamic Palette Swatches */
 .theme-selector {
 	display: grid;
@@ -600,7 +642,7 @@ body {
 }
 
 /* Action Icon Buttons */
-.more-btn, .mobile-menu-btn, .mobile-info-btn {
+.more-btn, .mobile-menu-btn, .mobile-info-btn, .theme-mode-toggle-btn {
 	width: 40px;
 	height: 40px;
 	border: none;
@@ -616,16 +658,16 @@ body {
 	            transform var(--md-sys-motion-duration-short) ease;
 }
 
-.more-btn:hover, .mobile-menu-btn:hover, .mobile-info-btn:hover {
+.more-btn:hover, .mobile-menu-btn:hover, .mobile-info-btn:hover, .theme-mode-toggle-btn:hover {
 	background: var(--md-sys-color-surface-container-highest);
 	color: var(--md-sys-color-on-surface);
 }
 
-.more-btn:active, .mobile-menu-btn:active, .mobile-info-btn:active {
+.more-btn:active, .mobile-menu-btn:active, .mobile-info-btn:active, .theme-mode-toggle-btn:active {
 	transform: scale(0.92);
 }
 
-.more-btn svg, .mobile-menu-btn svg, .mobile-info-btn svg {
+.more-btn svg, .mobile-menu-btn svg, .mobile-info-btn svg, .theme-mode-toggle-btn svg {
 	width: 22px;
 	height: 22px;
 	fill: currentColor;

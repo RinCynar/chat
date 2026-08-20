@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-	<title>NodeCrypt - 端到端加密通信</title>
+	<title>NodeCrypt</title>
 	
 	<!-- Google Fonts: Roboto & Material Symbols -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,14 +49,17 @@
 			<div class="flip-card-inner">
 				<!-- 卡片正面 - 登录与创建房间 -->
 				<div class="flip-card-front">
-					<!-- 使用说明按钮 -->
-					<button class="help-btn" id="help-btn" type="button" data-i18n-title="help.usage_guide" title="使用说明">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<circle cx="12" cy="12" r="10"></circle>
-							<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-							<line x1="12" y1="17" x2="12.01" y2="17"></line>
-						</svg>
-					</button>
+					<div class="card-top-actions">
+						<button class="theme-mode-toggle-btn" id="login-theme-toggle-btn" type="button" title="切换深色/浅色模式" aria-label="切换深色/浅色模式"></button>
+						<!-- 使用说明按钮 -->
+						<button class="help-btn" id="help-btn" type="button" data-i18n-title="help.usage_guide" title="使用说明">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="12" r="10"></circle>
+								<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+								<line x1="12" y1="17" x2="12.01" y2="17"></line>
+							</svg>
+						</button>
+					</div>
 
 					<div class="login-header-brand">
 						<div class="login-logo-badge">
