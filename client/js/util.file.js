@@ -2,7 +2,8 @@
 // 导入必要的模块
 import { deflate, inflate } from 'fflate';
 import { showFileUploadModal } from './util.fileUpload.js';
-import { isImageFile, createThumbnailDataUrl } from './util.image.js';
+import { createThumbnailDataUrl } from './util.image.js';
+import { isImageFile, isVideoFile, isAudioFile, isMediaFile, getMediaCategory, getMimeType } from './util.media.js';
 import { t } from './util.i18n.js';
 
 // 分卷大小统一配置
@@ -255,11 +256,12 @@ async function decompressVolumesToFile(volumes, fileName, originalHash = null) {
 	}
 }
 
-// Decompress volumes directly to Blob (for instant image preview)
-// 将分卷直接解压为 Blob（用于图片即时预览）
-export async function decompressVolumesToBlob(volumes, originalHash = null) {
+// Decompress volumes directly to Blob (for instant image/video/audio preview)
+// 将分卷直接解压为 Blob（用于多媒体即时预览）
+export async function decompressVolumesToBlob(volumes, originalHash = null, mimeType = '') {
 	try {
-		const combinedData = volumes.map(volume => base64ToArrayBuffer(volume));
+		const validVolumes = (volumes || []).filter(v => typeof v === 'string' && v.length > 0);
+		const combinedData = validVolumes.map(volume => base64ToArrayBuffer(volume));
 		const totalLength = combinedData.reduce((sum, arr) => sum + arr.length, 0);
 		const compressed = new Uint8Array(totalLength);
 		let offset = 0;
@@ -270,7 +272,7 @@ export async function decompressVolumesToBlob(volumes, originalHash = null) {
 		return new Promise((resolve, reject) => {
 			inflate(compressed, (err, decompressed) => {
 				if (err) return reject(err);
-				const blob = new Blob([decompressed]);
+				const blob = mimeType ? new Blob([decompressed], { type: mimeType }) : new Blob([decompressed]);
 				resolve(blob);
 			});
 		});
@@ -423,15 +425,17 @@ async function handleFilesUpload(files, onSend) {
 			const file = files[0];
 			showProgress();
 			
-			// Generate thumbnail and preview object URL for image files
+			// Generate preview object URL and thumbnail for media files
 			let thumbnail = null;
 			let objectUrl = null;
-			if (isImageFile(file)) {
+			if (isMediaFile(file)) {
 				try {
-					thumbnail = await createThumbnailDataUrl(file, 480, 480, 0.8);
 					objectUrl = URL.createObjectURL(file);
+					if (isImageFile(file)) {
+						thumbnail = await createThumbnailDataUrl(file, 480, 480, 0.8);
+					}
 				} catch (e) {
-					console.warn('Could not create image thumbnail:', e);
+					console.warn('Could not create media preview:', e);
 				}
 			}
 			
@@ -450,7 +454,8 @@ async function handleFilesUpload(files, onSend) {
 				status: 'sending',
 				originalHash,
 				thumbnail,
-				objectUrl
+				objectUrl,
+				mediaType: getMediaCategory(file.name)
 			};
 			
 			window.fileTransfers.set(fileId, fileTransfer);
@@ -464,7 +469,8 @@ async function handleFilesUpload(files, onSend) {
 				compressedSize,
 				totalVolumes: volumes.length,
 				originalHash,
-				thumbnail
+				thumbnail,
+				mediaType: getMediaCategory(file.name)
 			});
 			
 			// Send volumes
@@ -576,6 +582,31 @@ async function sendVolumes(fileId, volumes, onSend, updateProgress, fileName) {
 	sendNextBatch();
 }
 
+// Check and finalize file transfer when all volumes are collected
+async function checkAndFinalizeTransfer(transfer, fileId) {
+	if (!transfer || transfer.status === 'completed') return;
+	
+	const validVolumes = (transfer.volumeData || []).filter(v => typeof v === 'string' && v.length > 0);
+	const hasAllVolumes = validVolumes.length === transfer.totalVolumes && transfer.receivedVolumes.size >= transfer.totalVolumes;
+	
+	if (hasAllVolumes || (transfer.isCompleteMsgReceived && validVolumes.length === transfer.totalVolumes)) {
+		transfer.status = 'completed';
+		if (isMediaFile(transfer.fileName) && !transfer.isArchive) {
+			try {
+				const mimeType = getMimeType(transfer.fileName);
+				const blob = await decompressVolumesToBlob(transfer.volumeData, transfer.originalHash, mimeType);
+				if (blob) {
+					transfer.blob = blob;
+					transfer.objectUrl = URL.createObjectURL(blob);
+				}
+			} catch (e) {
+				console.warn('Auto media preview decompression failed:', e);
+			}
+		}
+		updateFileProgress(fileId);
+	}
+}
+
 // Update file progress in chat
 // 更新聊天中的文件进度
 export function updateFileProgress(fileId) {
@@ -588,34 +619,66 @@ export function updateFileProgress(fileId) {
 		const statusText = element.querySelector('.file-status');
 		const downloadBtn = element.querySelector('.file-download-btn');
 		
-		// If image preview is available, update or inject the preview thumbnail
+		// If media preview (image / video / audio) is available, update or inject the preview player/card
 		const previewUrl = transfer.objectUrl || transfer.thumbnail;
-		if (previewUrl && isImageFile(transfer.fileName)) {
-			const thumbImg = element.querySelector('.file-image-thumb');
-			if (thumbImg) {
-				if (transfer.objectUrl && thumbImg.src !== transfer.objectUrl) {
-					thumbImg.src = transfer.objectUrl;
+		if (previewUrl && !transfer.isArchive) {
+			if (isImageFile(transfer.fileName)) {
+				const thumbImg = element.querySelector('.file-image-thumb');
+				if (thumbImg) {
+					if (transfer.objectUrl && thumbImg.src !== transfer.objectUrl) {
+						thumbImg.src = transfer.objectUrl;
+					}
+				} else {
+					const mainContent = element.querySelector('.file-main-content');
+					if (mainContent && !element.querySelector('.file-image-thumb-wrap')) {
+						const thumbWrap = document.createElement('div');
+						thumbWrap.className = 'file-image-thumb-wrap';
+						thumbWrap.onclick = () => {
+							if (window.showImageModal) window.showImageModal(previewUrl);
+						};
+						thumbWrap.title = transfer.fileName;
+						thumbWrap.innerHTML = `
+							<img src="${previewUrl}" alt="${transfer.fileName}" class="file-image-thumb bubble-img" loading="lazy">
+							<div class="file-image-zoom-badge">
+								<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+									<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/>
+								</svg>
+							</div>
+						`;
+						mainContent.parentNode.insertBefore(thumbWrap, mainContent);
+						element.classList.add('image-file-message');
+					}
 				}
-			} else {
-				// Inject image thumbnail card into message
-				const mainContent = element.querySelector('.file-main-content');
-				if (mainContent && !element.querySelector('.file-image-thumb-wrap')) {
-					const thumbWrap = document.createElement('div');
-					thumbWrap.className = 'file-image-thumb-wrap';
-					thumbWrap.onclick = () => {
-						if (window.showImageModal) window.showImageModal(previewUrl);
-					};
-					thumbWrap.title = transfer.fileName;
-					thumbWrap.innerHTML = `
-						<img src="${previewUrl}" alt="${transfer.fileName}" class="file-image-thumb bubble-img" loading="lazy">
-						<div class="file-image-zoom-badge">
-							<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-								<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-							</svg>
-						</div>
-					`;
-					mainContent.parentNode.insertBefore(thumbWrap, mainContent);
-					element.classList.add('image-file-message');
+			} else if (isVideoFile(transfer.fileName) && transfer.objectUrl) {
+				const videoPlayer = element.querySelector('.file-video-player');
+				if (videoPlayer) {
+					if (videoPlayer.src !== transfer.objectUrl) {
+						videoPlayer.src = transfer.objectUrl;
+					}
+				} else {
+					const mainContent = element.querySelector('.file-main-content');
+					if (mainContent && !element.querySelector('.file-video-player-wrap')) {
+						const videoWrap = document.createElement('div');
+						videoWrap.className = 'file-video-player-wrap';
+						videoWrap.innerHTML = `<video src="${transfer.objectUrl}" controls preload="metadata" playsinline class="file-video-player"></video>`;
+						mainContent.parentNode.insertBefore(videoWrap, mainContent);
+						element.classList.add('video-file-message');
+					}
+				}
+			} else if (isAudioFile(transfer.fileName) && transfer.objectUrl) {
+				const audioPlayer = element.querySelector('.file-audio-player');
+				if (audioPlayer) {
+					if (audioPlayer.src !== transfer.objectUrl) {
+						audioPlayer.src = transfer.objectUrl;
+					}
+				} else {
+					if (!element.querySelector('.file-audio-player-wrap')) {
+						const audioWrap = document.createElement('div');
+						audioWrap.className = 'file-audio-player-wrap';
+						audioWrap.innerHTML = `<audio src="${transfer.objectUrl}" controls preload="metadata" class="file-audio-player"></audio>`;
+						element.appendChild(audioWrap);
+						element.classList.add('audio-file-message');
+					}
 				}
 			}
 		}
@@ -705,7 +768,7 @@ export function handleFileMessage(message, isPrivate = false) {
 // Handle file start message
 // 处理文件开始消息
 function handleFileStart(message, isPrivate) {
-	const { fileId, fileName, originalSize, compressedSize, totalVolumes, originalHash, archiveHash, fileCount, fileManifest, isArchive, userName, thumbnail } = message;
+	const { fileId, fileName, originalSize, compressedSize, totalVolumes, originalHash, archiveHash, fileCount, fileManifest, isArchive, userName, thumbnail, mediaType } = message;
 	
 	const fileTransfer = {
 		fileId,
@@ -722,7 +785,8 @@ function handleFileStart(message, isPrivate) {
 		fileManifest,
 		isArchive,
 		userName,
-		thumbnail
+		thumbnail,
+		mediaType: mediaType || getMediaCategory(fileName)
 	};
 	
 	window.fileTransfers.set(fileId, fileTransfer);
@@ -749,7 +813,8 @@ function handleFileStart(message, isPrivate) {
 				originalSize,
 				totalVolumes,
 				userName,
-				thumbnail
+				thumbnail,
+				mediaType: mediaType || getMediaCategory(fileName)
 			};
 		}
 		
@@ -769,39 +834,30 @@ function handleFileVolume(message) {
 	transfer.volumeData[volumeIndex] = volumeData;
 	
 	updateFileProgress(fileId);
+	checkAndFinalizeTransfer(transfer, fileId);
 }
 
 // Handle file complete message
 // 处理文件完成消息
-async function handleFileComplete(message) {
+function handleFileComplete(message) {
 	const { fileId } = message;
 	const transfer = window.fileTransfers.get(fileId);
 	
 	if (!transfer) return;
 	
-	// 检查是否所有分卷都已接收
-	if (transfer.receivedVolumes.size === transfer.totalVolumes) {
-		transfer.status = 'completed';
-		if (isImageFile(transfer.fileName) && !transfer.isArchive) {
-			try {
-				const blob = await decompressVolumesToBlob(transfer.volumeData, transfer.originalHash);
-				if (blob) {
-					transfer.blob = blob;
-					transfer.objectUrl = URL.createObjectURL(blob);
-				}
-			} catch (e) {
-				console.warn('Auto image preview generation failed:', e);
-			}
-		}
-		updateFileProgress(fileId);
-	}
+	transfer.isCompleteMsgReceived = true;
+	checkAndFinalizeTransfer(transfer, fileId);
+	updateFileProgress(fileId);
 }
 
 // Download file from volumes
 // 从分卷下载文件
 export async function downloadFile(fileId) {
 	const transfer = window.fileTransfers.get(fileId);
-	if (!transfer || transfer.status !== 'completed') return;
+	if (!transfer) {
+		console.warn('File transfer not found in memory:', fileId);
+		return;
+	}
 	
 	try {
 		if (transfer.objectUrl) {

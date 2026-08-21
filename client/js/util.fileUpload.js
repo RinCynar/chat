@@ -10,7 +10,7 @@ import {
 	removeClass
 } from './util.dom.js';
 import { formatFileSize } from './util.file.js';
-import { isImageFile } from './util.image.js';
+import { isImageFile, isVideoFile, isAudioFile } from './util.media.js';
 import { t } from './util.i18n.js';
 
 // File upload modal state
@@ -294,13 +294,25 @@ function updateFileList() {
 	
 	for (const [fileId, file] of selectedFiles) {
 		const isImg = isImageFile(file);
+		const isVid = isVideoFile(file);
+		const isAud = isAudioFile(file);
 		const thumbSrc = isImg ? URL.createObjectURL(file) : '';
+		
+		let iconHtml = '<div class="modal-file-icon">📄</div>';
+		if (isImg) {
+			iconHtml = `<img src="${thumbSrc}" class="modal-file-thumbnail" alt="${file.name}">`;
+		} else if (isVid) {
+			iconHtml = '<div class="modal-file-icon">🎬</div>';
+		} else if (isAud) {
+			iconHtml = '<div class="modal-file-icon">🎵</div>';
+		}
+
 		const fileItem = createElement('div', {
 			class: 'file-item' + (isImg ? ' is-image' : ''),
 			'data-file-id': fileId
 		}, `
 			<div class="file-item-left">
-				${isImg ? `<img src="${thumbSrc}" class="modal-file-thumbnail" alt="${file.name}">` : `<div class="modal-file-icon">📄</div>`}
+				${iconHtml}
 				<div class="file-item-info">
 					<div class="file-item-name" title="${file.name}">${file.name}</div>
 					<div class="file-item-size">${formatFileSize(file.size)}</div>
