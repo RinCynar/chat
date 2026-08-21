@@ -162,17 +162,18 @@
 
 	.bubble.file-bubble,
 	.bubble.image-bubble {
-		max-width: 88% !important;
-		padding: 6px 10px;
+		max-width: 82% !important;
+		padding: 6px 8px !important;
+		gap: 3px !important;
 	}
 
 	.bubble-img,
 	.file-image-thumb {
-		max-height: 200px;
+		max-height: 220px;
 	}
 
 	.file-video-player {
-		max-height: 200px;
+		max-height: 220px;
 	}
 
 	/* Floating Input Dock on Mobile */

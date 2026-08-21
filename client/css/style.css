@@ -933,12 +933,19 @@ body {
 }
 
 /* File Message Cards */
+.bubble.file-bubble,
+.bubble.image-bubble {
+	max-width: min(75%, 340px);
+	padding: 8px 10px;
+	gap: 4px;
+}
+
 .file-message {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 6px;
 	width: 100%;
-	min-width: min(200px, 100%);
+	min-width: 0;
 	max-width: 100%;
 	box-sizing: border-box;
 }
@@ -947,14 +954,14 @@ body {
 .file-message.image-file-message {
 	width: 100%;
 	max-width: 100%;
-	min-width: min(200px, 100%);
+	min-width: 0;
 	box-sizing: border-box;
 }
 
 .file-image-card {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 6px;
 	width: 100%;
 	max-width: 100%;
 	box-sizing: border-box;
@@ -964,22 +971,25 @@ body {
 	position: relative;
 	width: 100%;
 	max-width: 100%;
-	max-height: 260px;
+	max-height: 240px;
 	border-radius: var(--md-sys-shape-corner-md);
 	overflow: hidden;
 	cursor: pointer;
-	background: rgba(0, 0, 0, 0.05);
-	box-shadow: var(--md-sys-elevation-1);
+	background: transparent;
 	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .file-image-thumb {
 	width: 100%;
 	max-width: 100%;
 	height: auto;
-	max-height: 260px;
-	object-fit: contain;
+	max-height: 240px;
+	object-fit: cover;
 	display: block;
+	border-radius: var(--md-sys-shape-corner-md);
 	box-sizing: border-box;
 	transition: transform var(--md-sys-motion-duration-short) ease;
 }
@@ -1017,7 +1027,7 @@ body {
 .file-message.audio-file-message {
 	width: 100%;
 	max-width: 100%;
-	min-width: min(220px, 100%);
+	min-width: 0;
 	box-sizing: border-box;
 }
 
@@ -1025,7 +1035,7 @@ body {
 .file-audio-card {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 6px;
 	width: 100%;
 	max-width: 100%;
 	box-sizing: border-box;
@@ -1054,7 +1064,7 @@ body {
 .file-audio-player-wrap {
 	width: 100%;
 	max-width: 100%;
-	padding: 4px 0 2px 0;
+	padding: 2px 0;
 	box-sizing: border-box;
 }
 
@@ -1071,22 +1081,24 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 12px;
+	gap: 8px;
 	width: 100%;
 	max-width: 100%;
+	padding: 2px 2px;
 	box-sizing: border-box;
 }
 
 .file-info {
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: 8px;
 	flex: 1;
 	min-width: 0;
 }
 
 .file-icon {
-	font-size: 28px;
+	font-size: 22px;
+	line-height: 1;
 	flex-shrink: 0;
 }
 
@@ -1096,23 +1108,25 @@ body {
 }
 
 .file-name {
-	font-size: 13.5px;
+	font-size: 13px;
 	font-weight: 600;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	color: inherit;
+	line-height: 1.3;
 }
 
 .file-meta {
-	font-size: 11.5px;
-	opacity: 0.8;
-	margin-top: 2px;
+	font-size: 11px;
+	opacity: 0.75;
+	margin-top: 1px;
+	line-height: 1.2;
 }
 
 .file-download-btn {
-	width: 38px;
-	height: 38px;
+	width: 32px;
+	height: 32px;
 	border-radius: var(--md-sys-shape-corner-full);
 	background: var(--md-sys-color-primary);
 	color: var(--md-sys-color-on-primary);
@@ -1132,8 +1146,8 @@ body {
 }
 
 .file-download-btn svg {
-	width: 20px;
-	height: 20px;
+	width: 16px;
+	height: 16px;
 	fill: currentColor;
 }
 
