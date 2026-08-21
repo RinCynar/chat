@@ -10,6 +10,7 @@ import {
 	removeClass
 } from './util.dom.js';
 import { formatFileSize } from './util.file.js';
+import { isImageFile } from './util.image.js';
 import { t } from './util.i18n.js';
 
 // File upload modal state
@@ -292,13 +293,18 @@ function updateFileList() {
 	fileList.innerHTML = '';
 	
 	for (const [fileId, file] of selectedFiles) {
+		const isImg = isImageFile(file);
+		const thumbSrc = isImg ? URL.createObjectURL(file) : '';
 		const fileItem = createElement('div', {
-			class: 'file-item',
+			class: 'file-item' + (isImg ? ' is-image' : ''),
 			'data-file-id': fileId
 		}, `
-			<div class="file-item-info">
-				<div class="file-item-name" title="${file.name}">${file.name}</div>
-				<div class="file-item-size">${formatFileSize(file.size)}</div>
+			<div class="file-item-left">
+				${isImg ? `<img src="${thumbSrc}" class="modal-file-thumbnail" alt="${file.name}">` : `<div class="modal-file-icon">📄</div>`}
+				<div class="file-item-info">
+					<div class="file-item-name" title="${file.name}">${file.name}</div>
+					<div class="file-item-size">${formatFileSize(file.size)}</div>
+				</div>
 			</div>
 			<button class="file-item-remove" type="button" data-file-id="${fileId}">&times;</button>
 		`);

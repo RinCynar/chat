@@ -6,6 +6,56 @@ import {
 	createElement
 } from './util.dom.js';
 
+// Helper function to check if a file or filename is an image
+// 辅助函数：判断文件或文件名是否为图片
+export function isImageFile(fileNameOrType) {
+	if (!fileNameOrType) return false;
+	if (typeof fileNameOrType === 'string') {
+		return /\.(jpe?g|png|gif|webp|svg|bmp|ico|avif|heic)$/i.test(fileNameOrType) || fileNameOrType.startsWith('image/');
+	}
+	if (fileNameOrType instanceof File || fileNameOrType instanceof Blob) {
+		return (fileNameOrType.type && fileNameOrType.type.startsWith('image/')) || (fileNameOrType.name && /\.(jpe?g|png|gif|webp|svg|bmp|ico|avif|heic)$/i.test(fileNameOrType.name));
+	}
+	return false;
+}
+
+// Generate thumbnail data URL from File or Blob
+// 从 File 或 Blob 生成轻量缩略图 DataURL
+export function createThumbnailDataUrl(file, maxWidth = 480, maxHeight = 480, quality = 0.8) {
+	return new Promise((resolve) => {
+		if (!isImageFile(file)) return resolve(null);
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const img = new Image();
+			img.onload = () => {
+				let w = img.naturalWidth || img.width;
+				let h = img.naturalHeight || img.height;
+				if (!w || !h) return resolve(e.target.result);
+				if (w > maxWidth || h > maxHeight) {
+					const scale = Math.min(maxWidth / w, maxHeight / h);
+					w = Math.round(w * scale);
+					h = Math.round(h * scale);
+				}
+				const canvas = createElement('canvas');
+				canvas.width = w;
+				canvas.height = h;
+				const ctx = canvas.getContext('2d');
+				ctx.drawImage(img, 0, 0, w, h);
+				try {
+					const dataUrl = canvas.toDataURL('image/webp', quality);
+					resolve(dataUrl);
+				} catch {
+					resolve(e.target.result);
+				}
+			};
+			img.onerror = () => resolve(e.target.result);
+			img.src = e.target.result;
+		};
+		reader.onerror = () => resolve(null);
+		reader.readAsDataURL(file);
+	});
+}
+
 // Process and compress image file
 // 处理并压缩图片文件
 export async function processImage(file, callback) {
@@ -22,7 +72,7 @@ export async function processImage(file, callback) {
 		if (w > maxW || h > maxH) {
 			const scale = Math.min(maxW / w, maxH / h);
 			w = Math.round(w * scale);
-			h = Math.round(h * scale)
+			h = Math.round(h * scale);
 		}
 		// Create canvas for drawing image
 		// 创建画布用于绘制图片
@@ -35,15 +85,15 @@ export async function processImage(file, callback) {
 		// Export as webp with 90% quality
 		// 导出为 webp，90% 质量
 		dataUrl = canvas.toDataURL('image/webp', 0.90);
-		callback(dataUrl)
+		callback(dataUrl);
 	};
 	// Read file as data URL
 	// 以 dataURL 方式读取文件
 	const reader = new FileReader();
 	reader.onload = function(e) {
-		img.src = e.target.result
+		img.src = e.target.result;
 	};
-	reader.readAsDataURL(file)
+	reader.readAsDataURL(file);
 }
 
 // Translate message key

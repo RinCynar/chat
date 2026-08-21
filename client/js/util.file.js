@@ -2,6 +2,8 @@
 // 导入必要的模块
 import { deflate, inflate } from 'fflate';
 import { showFileUploadModal } from './util.fileUpload.js';
+import { isImageFile, createThumbnailDataUrl } from './util.image.js';
+import { t } from './util.i18n.js';
 
 // 分卷大小统一配置
 const DEFAULT_VOLUME_SIZE = 256 * 1024; // 512KB
@@ -253,6 +255,31 @@ async function decompressVolumesToFile(volumes, fileName, originalHash = null) {
 	}
 }
 
+// Decompress volumes directly to Blob (for instant image preview)
+// 将分卷直接解压为 Blob（用于图片即时预览）
+export async function decompressVolumesToBlob(volumes, originalHash = null) {
+	try {
+		const combinedData = volumes.map(volume => base64ToArrayBuffer(volume));
+		const totalLength = combinedData.reduce((sum, arr) => sum + arr.length, 0);
+		const compressed = new Uint8Array(totalLength);
+		let offset = 0;
+		for (const data of combinedData) {
+			compressed.set(data, offset);
+			offset += data.length;
+		}
+		return new Promise((resolve, reject) => {
+			inflate(compressed, (err, decompressed) => {
+				if (err) return reject(err);
+				const blob = new Blob([decompressed]);
+				resolve(blob);
+			});
+		});
+	} catch (error) {
+		console.error('Decompress to blob error:', error);
+		return null;
+	}
+}
+
 // Decompress archive volumes to multiple files
 // 将归档分卷解压为多个文件
 async function decompressArchiveToFiles(volumes, fileManifest, archiveHash = null) {
@@ -396,6 +423,18 @@ async function handleFilesUpload(files, onSend) {
 			const file = files[0];
 			showProgress();
 			
+			// Generate thumbnail and preview object URL for image files
+			let thumbnail = null;
+			let objectUrl = null;
+			if (isImageFile(file)) {
+				try {
+					thumbnail = await createThumbnailDataUrl(file, 480, 480, 0.8);
+					objectUrl = URL.createObjectURL(file);
+				} catch (e) {
+					console.warn('Could not create image thumbnail:', e);
+				}
+			}
+			
 			const { volumes, originalSize, compressedSize, originalHash } = await compressFileToVolumes(file);
 			
 			updateProgress();
@@ -409,7 +448,9 @@ async function handleFilesUpload(files, onSend) {
 				totalVolumes: volumes.length,
 				sentVolumes: 0,
 				status: 'sending',
-				originalHash
+				originalHash,
+				thumbnail,
+				objectUrl
 			};
 			
 			window.fileTransfers.set(fileId, fileTransfer);
@@ -422,7 +463,8 @@ async function handleFilesUpload(files, onSend) {
 				originalSize,
 				compressedSize,
 				totalVolumes: volumes.length,
-				originalHash
+				originalHash,
+				thumbnail
 			});
 			
 			// Send volumes
@@ -536,7 +578,7 @@ async function sendVolumes(fileId, volumes, onSend, updateProgress, fileName) {
 
 // Update file progress in chat
 // 更新聊天中的文件进度
-function updateFileProgress(fileId) {
+export function updateFileProgress(fileId) {
 	const transfer = window.fileTransfers.get(fileId);
 	if (!transfer) return;
 	const elements = document.querySelectorAll(`[data-file-id="${fileId}"]`);
@@ -546,6 +588,38 @@ function updateFileProgress(fileId) {
 		const statusText = element.querySelector('.file-status');
 		const downloadBtn = element.querySelector('.file-download-btn');
 		
+		// If image preview is available, update or inject the preview thumbnail
+		const previewUrl = transfer.objectUrl || transfer.thumbnail;
+		if (previewUrl && isImageFile(transfer.fileName)) {
+			const thumbImg = element.querySelector('.file-image-thumb');
+			if (thumbImg) {
+				if (transfer.objectUrl && thumbImg.src !== transfer.objectUrl) {
+					thumbImg.src = transfer.objectUrl;
+				}
+			} else {
+				// Inject image thumbnail card into message
+				const mainContent = element.querySelector('.file-main-content');
+				if (mainContent && !element.querySelector('.file-image-thumb-wrap')) {
+					const thumbWrap = document.createElement('div');
+					thumbWrap.className = 'file-image-thumb-wrap';
+					thumbWrap.onclick = () => {
+						if (window.showImageModal) window.showImageModal(previewUrl);
+					};
+					thumbWrap.title = transfer.fileName;
+					thumbWrap.innerHTML = `
+						<img src="${previewUrl}" alt="${transfer.fileName}" class="file-image-thumb bubble-img" loading="lazy">
+						<div class="file-image-zoom-badge">
+							<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+								<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+							</svg>
+						</div>
+					`;
+					mainContent.parentNode.insertBefore(thumbWrap, mainContent);
+					element.classList.add('image-file-message');
+				}
+			}
+		}
+
 		// 判断是否为发送方（发送方没有volumeData）
 		const isSender = !transfer.volumeData || transfer.volumeData.length === 0;
 		
@@ -556,7 +630,7 @@ function updateFileProgress(fileId) {
 				progressContainer.classList.remove('fade-out');
 			}
 			if (progressBar) progressBar.style.width = `${progress}%`;
-			if (statusText) statusText.textContent = `Sending ${transfer.sentVolumes}/${transfer.totalVolumes}`;
+			if (statusText) statusText.textContent = `${t('file.sending', 'Sending')} ${transfer.sentVolumes}/${transfer.totalVolumes}`;
 			if (downloadBtn) {
 				downloadBtn.classList.remove('show', 'animate-in');
 				downloadBtn.style.display = 'none';
@@ -568,7 +642,7 @@ function updateFileProgress(fileId) {
 				progressContainer.classList.remove('fade-out');
 			}
 			if (progressBar) progressBar.style.width = `${progress}%`;
-			if (statusText) statusText.textContent = `Receiving ${transfer.receivedVolumes.size}/${transfer.totalVolumes}`;
+			if (statusText) statusText.textContent = `${t('file.receiving', 'Receiving')} ${transfer.receivedVolumes.size}/${transfer.totalVolumes}`;
 			if (downloadBtn) {
 				downloadBtn.classList.remove('show', 'animate-in');
 				downloadBtn.style.display = 'none';
@@ -613,7 +687,7 @@ function updateFileProgress(fileId) {
 // Handle incoming file messages
 // 处理接收到的文件消息
 export function handleFileMessage(message, isPrivate = false) {
-	const { type, fileId, userName } = message;
+	const { type } = message;
 	
 	switch (type) {
 		case 'file_start':
@@ -631,7 +705,7 @@ export function handleFileMessage(message, isPrivate = false) {
 // Handle file start message
 // 处理文件开始消息
 function handleFileStart(message, isPrivate) {
-	const { fileId, fileName, originalSize, compressedSize, totalVolumes, originalHash, archiveHash, fileCount, fileManifest, isArchive, userName } = message;
+	const { fileId, fileName, originalSize, compressedSize, totalVolumes, originalHash, archiveHash, fileCount, fileManifest, isArchive, userName, thumbnail } = message;
 	
 	const fileTransfer = {
 		fileId,
@@ -647,7 +721,8 @@ function handleFileStart(message, isPrivate) {
 		fileCount,
 		fileManifest,
 		isArchive,
-		userName // 记录发送者名字
+		userName,
+		thumbnail
 	};
 	
 	window.fileTransfers.set(fileId, fileTransfer);
@@ -673,7 +748,8 @@ function handleFileStart(message, isPrivate) {
 				fileName,
 				originalSize,
 				totalVolumes,
-				userName
+				userName,
+				thumbnail
 			};
 		}
 		
@@ -697,7 +773,7 @@ function handleFileVolume(message) {
 
 // Handle file complete message
 // 处理文件完成消息
-function handleFileComplete(message) {
+async function handleFileComplete(message) {
 	const { fileId } = message;
 	const transfer = window.fileTransfers.get(fileId);
 	
@@ -706,6 +782,17 @@ function handleFileComplete(message) {
 	// 检查是否所有分卷都已接收
 	if (transfer.receivedVolumes.size === transfer.totalVolumes) {
 		transfer.status = 'completed';
+		if (isImageFile(transfer.fileName) && !transfer.isArchive) {
+			try {
+				const blob = await decompressVolumesToBlob(transfer.volumeData, transfer.originalHash);
+				if (blob) {
+					transfer.blob = blob;
+					transfer.objectUrl = URL.createObjectURL(blob);
+				}
+			} catch (e) {
+				console.warn('Auto image preview generation failed:', e);
+			}
+		}
 		updateFileProgress(fileId);
 	}
 }
@@ -717,18 +804,27 @@ export async function downloadFile(fileId) {
 	if (!transfer || transfer.status !== 'completed') return;
 	
 	try {
+		if (transfer.objectUrl) {
+			const a = document.createElement('a');
+			a.href = transfer.objectUrl;
+			a.download = transfer.fileName;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			return;
+		}
 		if (transfer.isArchive) {
 			// Download archive as multiple files
 			await decompressArchiveToFiles(transfer.volumeData, transfer.fileManifest, transfer.archiveHash);
-			// 删除系统提示
 		} else {
 			// Download single file
 			await decompressVolumesToFile(transfer.volumeData, transfer.fileName, transfer.originalHash);
-			// 删除系统提示
 		}
 	} catch (error) {
 		console.error('Download error:', error);
-		window.addSystemMsg(`Failed to download: ${error.message}`);
+		if (window.addSystemMsg) {
+			window.addSystemMsg(`Failed to download: ${error.message}`);
+		}
 	}
 }
 

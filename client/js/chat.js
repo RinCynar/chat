@@ -24,6 +24,9 @@ import {
 	formatFileSize
 } from './util.file.js';
 import {
+	isImageFile
+} from './util.image.js';
+import {
 	t
 } from './util.i18n.js';
 
@@ -249,12 +252,13 @@ export function updateChatInputStyle() {
 // Setup image preview functionality
 // 设置图片预览功能
 export function setupImagePreview() {
+	window.showImageModal = showImageModal;
 	on($id('chat-area'), 'click', function(e) {
 		const target = e.target;
-		if (target.tagName === 'IMG' && target.closest('.bubble-content')) {
-			showImageModal(target.src)
+		if (target.tagName === 'IMG' && (target.closest('.bubble-content') || target.closest('.bubble') || target.closest('.file-image-thumb-wrap'))) {
+			showImageModal(target.src);
 		}
-	})
+	});
 }
 
 // Show the image modal
@@ -346,13 +350,13 @@ function renderFileMessage(fileData, isSender) {
 		originalSize,
 		totalVolumes,
 		fileCount,
-		isArchive
+		isArchive,
+		thumbnail
 	} = fileData;
 	
 	// For archive files, show file count and total size
 	let displayName, displayMeta;
 	if (isArchive && fileCount) {
-		// 使用 i18n，保持原格式
 		displayName = `${fileCount}${t('file.files', ' files')}`;
 		displayMeta = `${t('file.total', 'Total')}: ${formatFileSize(originalSize)}`;
 	} else {
@@ -381,17 +385,53 @@ function renderFileMessage(fileData, isSender) {
 			statusText = `${t('file.receiving', 'Receiving')} ${transfer.receivedVolumes.size}/${transfer.totalVolumes}`;
 			showProgress = true;
 		} else if (transfer.status === 'completed') {
-			// 完成时不显示任何状态，只显示下载按钮
 			downloadBtnStyle = isSender ? 'display: none;' : 'display: flex;';
-		}	} else if (isSender) {
-		// 发送方历史消息，不显示状态和下载按钮
+		}
+	} else if (isSender) {
 		downloadBtnStyle = 'display: none;';
 	} else {
-		// 接收方历史消息，直接显示下载按钮（带动画效果）
 		downloadBtnStyle = 'display: flex;';
 	}
-	// Different icon for archives vs single files
-	const fileIcon = isArchive ? '📦' : '📄';
+	
+	// Check if this is an image file with preview available
+	const previewSrc = (transfer && (transfer.objectUrl || transfer.thumbnail)) || thumbnail || fileData.previewUrl;
+	const isImg = isImageFile(fileName) && !isArchive;
+	const fileIcon = isImg ? '🖼️' : (isArchive ? '📦' : '📄');
+
+	if (isImg && previewSrc) {
+		return `
+			<div class="file-message image-file-message" data-file-id="${fileId}">
+				<div class="file-image-card">
+					<div class="file-image-thumb-wrap" onclick="window.showImageModal('${previewSrc}')" title="${safeDisplayName}">
+						<img src="${previewSrc}" alt="${safeDisplayName}" class="file-image-thumb bubble-img" loading="lazy">
+						<div class="file-image-zoom-badge">
+							<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+								<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+							</svg>
+						</div>
+					</div>
+					<div class="file-main-content">
+						<div class="file-info">
+							<div class="file-icon">🖼️</div>
+							<div class="file-details">
+								<div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div>
+								<div class="file-meta">${displayMeta}</div>
+							</div>
+						</div>
+						<button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+						</button>
+					</div>
+					${showProgress ? `<div class="file-progress-container">
+						<div class="file-progress-bar">
+							<div class="file-progress" style="width: ${progressWidth}"></div>
+						</div>
+						<div class="file-status">${statusText}</div>
+					</div>` : ''}
+				</div>
+			</div>
+		`;
+	}
 
 	return `
 		<div class="file-message" data-file-id="${fileId}">
@@ -403,8 +443,8 @@ function renderFileMessage(fileData, isSender) {
 						<div class="file-meta">${displayMeta}</div>
 					</div>
 				</div>
-				<button class="file-download-btn show" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')">
-					<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M8 10C8 7.79086 9.79086 6 12 6C14.2091 6 16 7.79086 16 10V11H17C18.933 11 20.5 12.567 20.5 14.5C20.5 16.433 18.933 18 17 18H16.9C16.3477 18 15.9 18.4477 15.9 19C15.9 19.5523 16.3477 20 16.9 20H17C20.0376 20 22.5 17.5376 22.5 14.5C22.5 11.7793 20.5245 9.51997 17.9296 9.07824C17.4862 6.20213 15.0003 4 12 4C8.99974 4 6.51381 6.20213 6.07036 9.07824C3.47551 9.51997 1.5 11.7793 1.5 14.5C1.5 17.5376 3.96243 20 7 20H7.1C7.65228 20 8.1 19.5523 8.1 19C8.1 18.4477 7.65228 18 7.1 18H7C5.067 18 3.5 16.433 3.5 14.5C3.5 12.567 5.067 11 7 11H8V10ZM13 11C13 10.4477 12.5523 10 12 10C11.4477 10 11 10.4477 11 11V16.5858L9.70711 15.2929C9.31658 14.9024 8.68342 14.9024 8.29289 15.2929C7.90237 15.6834 7.90237 16.3166 8.29289 16.7071L11.2929 19.7071C11.6834 20.0976 12.3166 20.0976 12.7071 19.7071L15.7071 16.7071C16.0976 16.3166 16.0976 15.6834 15.7071 15.2929C15.3166 14.9024 14.6834 14.9024 14.2929 15.2929L13 16.5858V11Z" fill="currentColor"></path> </g></svg>
+				<button class="file-download-btn show" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
 				</button>
 			</div>
 			${showProgress ? `<div class="file-progress-container">
