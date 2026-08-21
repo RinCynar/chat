@@ -768,9 +768,9 @@ body {
    Chat Message Bubbles (Material Design 3 Style)
    ========================================================================== */
 .bubble {
-	width: fit-content;
-	max-width: 75%;
-	min-width: 56px;
+	width: max-content;
+	max-width: 100%;
+	min-width: 52px;
 	padding: 10px 16px;
 	border-radius: var(--md-sys-shape-corner-xl);
 	font-size: 15px;
@@ -813,6 +813,7 @@ body {
 	margin-left: auto;
 	border-bottom-right-radius: var(--md-sys-shape-corner-xs);
 	align-self: flex-end;
+	max-width: 75%;
 }
 
 .bubble.me .bubble-meta {
@@ -850,7 +851,9 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	width: max-content;
 	max-width: 100%;
+	min-width: 0;
 }
 
 .bubble-other-name {

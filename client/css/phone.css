@@ -101,9 +101,9 @@
 	}
 
 	.bubble {
-		width: fit-content !important;
-		max-width: 82% !important;
-		min-width: 52px;
+		width: max-content !important;
+		max-width: 100% !important;
+		min-width: 48px;
 		font-size: 14.5px;
 		padding: 8px 12px;
 		box-sizing: border-box !important;
@@ -121,6 +121,7 @@
 	}
 
 	.bubble.me {
+		max-width: 82% !important;
 		margin-left: auto !important;
 		margin-right: 0 !important;
 		align-self: flex-end !important;
@@ -142,7 +143,9 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		width: max-content;
 		max-width: 100%;
+		min-width: 0;
 	}
 
 	.bubble-other-name {
