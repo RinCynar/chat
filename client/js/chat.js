@@ -111,8 +111,9 @@ export function addMsg(text, isHistory = false, msgType = 'text', timestamp = nu
 	} else if (msgType === 'file' || msgType === 'file_private') {
 		// Handle file messages
 		contentHtml = renderFileMessage(text, true);
-		// Add file-bubble class for special timestamp positioning
 		className += ' file-bubble';
+	} else if (msgType === 'image' || msgType === 'image_private') {
+		className += ' image-bubble';
 	} else {
 		contentHtml = textToHTML(text)
 	}
@@ -194,7 +195,12 @@ export function addOtherMsg(msg, userName = '', avatar = '', isHistory = false, 
 	const time = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
 	let bubbleClasses = 'bubble other';
 	if (msgType && msgType.includes('_private')) {
-		bubbleClasses += ' private-message'
+		bubbleClasses += ' private-message';
+	}
+	if (msgType === 'file' || msgType === 'file_private') {
+		bubbleClasses += ' file-bubble';
+	} else if (msgType === 'image' || msgType === 'image_private') {
+		bubbleClasses += ' image-bubble';
 	}
 	bubbleWrap.innerHTML = `<span class="avatar"></span><div class="bubble-other-main"><div class="bubble-other-name">${safeUserName}</div><div class="${bubbleClasses}"><span class="bubble-content">${contentHtml}</span><span class="bubble-meta">${time}</span></div></div>`;
 	const svg = createAvatarSVG(userName);

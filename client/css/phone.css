@@ -155,6 +155,21 @@
 		max-width: 200px;
 	}
 
+	.bubble.file-bubble,
+	.bubble.image-bubble {
+		max-width: 88% !important;
+		padding: 6px 10px;
+	}
+
+	.bubble-img,
+	.file-image-thumb {
+		max-height: 200px;
+	}
+
+	.file-video-player {
+		max-height: 200px;
+	}
+
 	/* Floating Input Dock on Mobile */
 	.chat-input-area {
 		position: fixed;
