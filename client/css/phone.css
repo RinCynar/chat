@@ -103,16 +103,21 @@
 	.bubble {
 		width: fit-content !important;
 		max-width: 82% !important;
-		min-width: 44px;
+		min-width: 52px;
 		font-size: 14.5px;
 		padding: 8px 12px;
 		box-sizing: border-box !important;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		word-break: break-word;
 	}
 
 	.bubble-content {
-		word-break: normal;
-		overflow-wrap: anywhere;
 		display: block;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: pre-wrap;
 	}
 
 	.bubble.me {
@@ -123,7 +128,6 @@
 
 	.bubble-other-wrap {
 		max-width: 86% !important;
-		width: fit-content !important;
 		gap: 8px;
 		box-sizing: border-box !important;
 	}
@@ -139,8 +143,6 @@
 		flex-direction: column;
 		align-items: flex-start;
 		max-width: 100%;
-		width: fit-content;
-		min-width: 0;
 	}
 
 	.bubble-other-name {
