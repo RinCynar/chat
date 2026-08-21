@@ -196,10 +196,7 @@ export function addOtherMsg(msg, userName = '', avatar = '', isHistory = false, 
 	if (msgType && msgType.includes('_private')) {
 		bubbleClasses += ' private-message'
 	}
-	if (msgType === 'file' || msgType === 'file_private') {
-		bubbleClasses += ' file-bubble';
-	}
-	bubbleWrap.innerHTML = `<span class="avatar"></span><div class="bubble-other-main"><div class="${bubbleClasses}"><div class="bubble-other-name">${safeUserName}</div><span class="bubble-content">${contentHtml}</span><span class="bubble-meta">${time}</span></div></div>`;
+	bubbleWrap.innerHTML = `<span class="avatar"></span><div class="bubble-other-main"><div class="bubble-other-name">${safeUserName}</div><div class="${bubbleClasses}"><span class="bubble-content">${contentHtml}</span><span class="bubble-meta">${time}</span></div></div>`;
 	const svg = createAvatarSVG(userName);
 	const avatarEl = $('.avatar', bubbleWrap);
 	if (avatarEl) {
