@@ -120,6 +120,11 @@
 		white-space: pre-wrap;
 	}
 
+	.bubble.file-bubble .bubble-content,
+	.bubble.image-bubble .bubble-content {
+		white-space: normal !important;
+	}
+
 	.bubble.me {
 		max-width: 82% !important;
 		margin-left: auto !important;

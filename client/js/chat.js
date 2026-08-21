@@ -413,124 +413,20 @@ function renderFileMessage(fileData, isSender) {
 
 	// Image Card with Zoom
 	if (isImg && previewSrc) {
-		return `
-			<div class="file-message image-file-message" data-file-id="${fileId}">
-				<div class="file-image-card">
-					<div class="file-image-thumb-wrap" onclick="window.showImageModal('${previewSrc}')" title="${safeDisplayName}">
-						<img src="${previewSrc}" alt="${safeDisplayName}" class="file-image-thumb bubble-img" loading="lazy">
-						<div class="file-image-zoom-badge">
-							<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-								<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/>
-							</svg>
-						</div>
-					</div>
-					<div class="file-main-content">
-						<div class="file-info">
-							<div class="file-icon">🖼️</div>
-							<div class="file-details">
-								<div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div>
-								<div class="file-meta">${displayMeta}</div>
-							</div>
-						</div>
-						<button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-						</button>
-					</div>
-					${showProgress ? `<div class="file-progress-container">
-						<div class="file-progress-bar">
-							<div class="file-progress" style="width: ${progressWidth}"></div>
-						</div>
-						<div class="file-status">${statusText}</div>
-					</div>` : ''}
-				</div>
-			</div>
-		`;
+		return `<div class="file-message image-file-message" data-file-id="${fileId}"><div class="file-image-card"><div class="file-image-thumb-wrap" onclick="window.showImageModal('${previewSrc}')" title="${safeDisplayName}"><img src="${previewSrc}" alt="${safeDisplayName}" class="file-image-thumb bubble-img" loading="lazy"><div class="file-image-zoom-badge"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/></svg></div></div><div class="file-main-content"><div class="file-info"><div class="file-icon">🖼️</div><div class="file-details"><div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div><div class="file-meta">${displayMeta}</div></div></div><button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button></div>${showProgress ? `<div class="file-progress-container"><div class="file-progress-bar"><div class="file-progress" style="width: ${progressWidth}"></div></div><div class="file-status">${statusText}</div></div>` : ''}</div></div>`;
 	}
 
 	// Video Card with Inline Player
 	if (isVid && previewSrc) {
-		return `
-			<div class="file-message video-file-message" data-file-id="${fileId}">
-				<div class="file-video-card">
-					<div class="file-video-player-wrap">
-						<video src="${previewSrc}" controls preload="metadata" playsinline class="file-video-player"></video>
-					</div>
-					<div class="file-main-content">
-						<div class="file-info">
-							<div class="file-icon">🎬</div>
-							<div class="file-details">
-								<div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div>
-								<div class="file-meta">${displayMeta}</div>
-							</div>
-						</div>
-						<button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-						</button>
-					</div>
-					${showProgress ? `<div class="file-progress-container">
-						<div class="file-progress-bar">
-							<div class="file-progress" style="width: ${progressWidth}"></div>
-						</div>
-						<div class="file-status">${statusText}</div>
-					</div>` : ''}
-				</div>
-			</div>
-		`;
+		return `<div class="file-message video-file-message" data-file-id="${fileId}"><div class="file-video-card"><div class="file-video-player-wrap"><video src="${previewSrc}" controls preload="metadata" playsinline class="file-video-player"></video></div><div class="file-main-content"><div class="file-info"><div class="file-icon">🎬</div><div class="file-details"><div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div><div class="file-meta">${displayMeta}</div></div></div><button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button></div>${showProgress ? `<div class="file-progress-container"><div class="file-progress-bar"><div class="file-progress" style="width: ${progressWidth}"></div></div><div class="file-status">${statusText}</div></div>` : ''}</div></div>`;
 	}
 
 	// Audio Card with Inline Player
 	if (isAud && previewSrc) {
-		return `
-			<div class="file-message audio-file-message" data-file-id="${fileId}">
-				<div class="file-audio-card">
-					<div class="file-main-content">
-						<div class="file-info">
-							<div class="file-icon">🎵</div>
-							<div class="file-details">
-								<div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div>
-								<div class="file-meta">${displayMeta}</div>
-							</div>
-						</div>
-						<button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-						</button>
-					</div>
-					<div class="file-audio-player-wrap">
-						<audio src="${previewSrc}" controls preload="metadata" class="file-audio-player"></audio>
-					</div>
-					${showProgress ? `<div class="file-progress-container">
-						<div class="file-progress-bar">
-							<div class="file-progress" style="width: ${progressWidth}"></div>
-						</div>
-						<div class="file-status">${statusText}</div>
-					</div>` : ''}
-				</div>
-			</div>
-		`;
+		return `<div class="file-message audio-file-message" data-file-id="${fileId}"><div class="file-audio-card"><div class="file-main-content"><div class="file-info"><div class="file-icon">🎵</div><div class="file-details"><div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div><div class="file-meta">${displayMeta}</div></div></div><button class="file-download-btn ${downloadBtnStyle === 'display: none;' ? '' : 'show'}" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button></div><div class="file-audio-player-wrap"><audio src="${previewSrc}" controls preload="metadata" class="file-audio-player"></audio></div>${showProgress ? `<div class="file-progress-container"><div class="file-progress-bar"><div class="file-progress" style="width: ${progressWidth}"></div></div><div class="file-status">${statusText}</div></div>` : ''}</div></div>`;
 	}
 
-	return `
-		<div class="file-message" data-file-id="${fileId}">
-			<div class="file-main-content">
-				<div class="file-info">
-					<div class="file-icon">${fileIcon}</div>
-					<div class="file-details">
-						<div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div>
-						<div class="file-meta">${displayMeta}</div>
-					</div>
-				</div>
-				<button class="file-download-btn show" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-				</button>
-			</div>
-			${showProgress ? `<div class="file-progress-container">
-				<div class="file-progress-bar">
-					<div class="file-progress" style="width: ${progressWidth}"></div>
-				</div>
-				<div class="file-status">${statusText}</div>
-			</div>` : ''}
-		</div>
-	`;
+	return `<div class="file-message" data-file-id="${fileId}"><div class="file-main-content"><div class="file-info"><div class="file-icon">${fileIcon}</div><div class="file-details"><div class="file-name" title="${safeDisplayName}">${safeDisplayName}</div><div class="file-meta">${displayMeta}</div></div></div><button class="file-download-btn show" style="${downloadBtnStyle}" onclick="window.downloadFile('${fileId}')" title="${t('action.download', 'Download')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button></div>${showProgress ? `<div class="file-progress-container"><div class="file-progress-bar"><div class="file-progress" style="width: ${progressWidth}"></div></div><div class="file-status">${statusText}</div></div>` : ''}</div>`;
 }
 
 // Automatically adjust the height of the input area
